@@ -1,6 +1,9 @@
 
 from typing import Tuple
 
+from player import Player
+from triangles import Triangles
+
 
 Coordinates = Tuple[int, int]
 def is_loc_in_upper_tri(loc: Coordinates) -> bool:
@@ -76,6 +79,7 @@ def is_loc_in_lower_tri(loc: Coordinates) -> bool:
         start_row += 1
         places_to_fill -= 1
     return False
+
 
 if __name__=="__main__":
     pass

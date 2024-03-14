@@ -61,18 +61,4 @@ class GameSettings:
 
 
 if __name__ == "__main__":
-    board = Board()
-    game = GameSettings(board)
-
-    board.fill_upper_triangle(BoardValues.RED)
-    board.fill_lower_triangle(BoardValues.BLUE)
-    board.fill_upper_left_triangle(BoardValues.GREEN)
-    board.fill_lower_left_triangle(BoardValues.ORANGE)
-    board.fill_upper_right_triangle(BoardValues.PURPLE)
-    board.fill_lower_right_triangle(BoardValues.YELLOW)
-    board.print_board()
-    print(board.six_corners)
-    # board.clear_screen()
-    # board.print_board()
-    # print(", ".join(game.players_list))
-    # print(BoardValues["RED"].value)
+    pass
