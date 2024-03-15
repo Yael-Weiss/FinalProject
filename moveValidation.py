@@ -27,14 +27,14 @@ DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]
 
     # def get_players_destinations(self,board:Board,players_list:List[[Player]])->dict[List[[Player]],Triangles]:
 
-def get_list_of_possible_moves(game_settings:GameSettings, location: Coordinates) -> List[Tuple[int, int]]:
+def get_list_of_possible_moves(game_settings:GameSettings, current_loc: Coordinates) -> List[Tuple[int, int]]:
     # to add jumps
 
-    if not (game_settings.board.is_on_board(location)):
+    if not (game_settings.board.is_on_board(current_loc)):
         return []
 
     lst = []
-    row, col = location
+    row, col = current_loc
 
     if (0 < row and 0 < col):
         if (game_settings.board.the_board[row-1][col-1] == BoardValues.EMPTY):
@@ -56,7 +56,7 @@ def get_list_of_possible_moves(game_settings:GameSettings, location: Coordinates
 
     return lst
 
-def get_set_of_possible_jumps(game_settings:GameSettings, current_location:Coordinates, directions_list:List[Coordinates], possible_jumps_set: set[Coordinates]) -> set[Coordinates]:
+def get_set_of_possible_jumps(game_settings:GameSettings, current_location:Coordinates, possible_jumps_set: set[Coordinates],directions_list:List[Coordinates]=DIRECTIONS_LIST) -> set[Coordinates]:
     row, col = current_location
     for direction in directions_list:
         jump_to=(row+direction[0], col+direction[1])
@@ -65,8 +65,14 @@ def get_set_of_possible_jumps(game_settings:GameSettings, current_location:Coord
             #    and game_settings.board.the_board[jump_to[0]][jump_to[1]] != BoardValues.OUT_OF_BOARD):
             if (game_settings.board.the_board[jump_to[0]][jump_to[1]] == BoardValues.EMPTY and jump_to not in possible_jumps_set):
                 possible_jumps_set.add(jump_to)
-                get_set_of_possible_jumps(game_settings,jump_to,DIRECTIONS_LIST, possible_jumps_set)
+                get_set_of_possible_jumps(game_settings,jump_to, possible_jumps_set)
     return possible_jumps_set
+
+def get_all_possible_moves(game_settings:GameSettings,current_loc:Coordinates) -> List[Tuple[int, int]]:
+        possible_moves=get_list_of_possible_moves(game_settings,current_loc)
+        possible_jumps=list(get_set_of_possible_jumps(game_settings,current_loc,set({})))
+        possible_moves.extend(list(possible_jumps))
+        return possible_moves
 
 def is_in_destination(player: Player, loc: Coordinates) -> bool:
     return TRIANGLES_CHECK[player.destination_tri](loc)
@@ -80,13 +86,18 @@ def is_in_triangle_not_des(player: Player, loc: Coordinates) -> bool:
 
 def is_valid_move(game_settings:GameSettings,player: Player, loc: Coordinates, go_to: Coordinates) -> bool:
     if ((not is_in_triangle_not_des(player, go_to)) and player.color == game_settings.board.cell_content(loc)
-            and ((go_to in get_set_of_possible_jumps(loc, set({}))) or (go_to in get_list_of_possible_moves(loc)))):
+            and ((go_to in get_set_of_possible_jumps(game_settings,loc,DIRECTIONS_LIST, set({}))) or (go_to in get_list_of_possible_moves(game_settings,loc)))):
         return True
     return False
 
 def move_player(game_settings:GameSettings,player: Player, loc: Coordinates, go_to: Coordinates) -> bool:
-    if (is_valid_move(player, loc, go_to)):
+    if (is_valid_move(game_settings, player, loc, go_to)):
         game_settings.board.the_board[loc[0]][loc[1]] = BoardValues.EMPTY
         game_settings.board.the_board[go_to[0]][go_to[1]] = player.color
         return True
     return False
+
+if __name__ == "__main__":
+    game_settings=GameSettings()
+    
+    print(get_set_of_possible_jumps())

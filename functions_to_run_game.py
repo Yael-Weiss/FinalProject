@@ -4,6 +4,7 @@ from player import Player
 from setting_for_game import GameSettings
 import moveValidation
 import checking_dest
+import triangles_funcs
 
 Coordinates = Tuple[int, int]
 
@@ -26,18 +27,25 @@ def single_round(game_settings:GameSettings)->Union[Player,None]:
     return None
 
 def single_player_turn(game_settings:GameSettings,player:Player)->None:
+    player_locs_list=triangles_funcs.get_all_locs_4player(game_settings.board.the_board,player)
     while(True):
         current_loc=input("What piece you would like to move? ")
-        #
-        if(is_valid_current_loc(current_loc)):
-            break
+        if(str(current_loc).isdigit()):
+            if(1<=int(current_loc)<=10):
+                current_loc=player_locs_list[int(current_loc)-1]
+                if(is_valid_current_loc(game_settings.board,player ,current_loc)):
+                    break
         print("Invalid choice. Let's try again. ")
-    while(True):
-        go_to=input("Where would you like to move it? ", end="\n")
-        if(moveValidation.is_valid_move(game_settings,player,current_loc,go_to)):
-            break
-        print("Invalid choice. Let's try again.")
-    moveValidation.move_player(game_settings,player,current_loc,go_to)
+    possible_moves=moveValidation.get_list_of_possible_moves(game_settings,current_loc)
+    possible_jumps=moveValidation.get_set_of_possible_jumps(game_settings,current_loc,set({}))
+    all_possible_moves=moveValidation.get_all_possible_moves(possible_moves,possible_jumps)
+    print(all_possible_moves)
+    # while(True):
+    #     go_to=input("Where would you like to move it? ", end="\n")
+    #     if(moveValidation.is_valid_move(game_settings,player,current_loc,go_to)):
+    #         break
+    #     print("Invalid choice. Let's try again.")
+    moveValidation.move_player(game_settings,player,current_loc,(4,10))#go_to)
 def play(game_settings:GameSettings) -> None:
     # """
     # The main driver of the Game. Manages the game until completion.
