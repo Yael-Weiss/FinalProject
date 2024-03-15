@@ -1,5 +1,5 @@
 from typing import Tuple
-from Board import Board
+from board import Board
 from BoardValues import BoardValues
 import moveValidation
 from player import Player
@@ -21,8 +21,10 @@ def main():
     p2=Player("a",BoardValues.BLUE,Triangles.lower_tri)
     lst=[p1,p2]
     game_settings.board.fill_beginning_triangles(lst)
-    game_settings.board.print_board()
-    functions_to_run_game.single_player_turn(game_settings,p1)
+    game_settings.board.print_board(p1)
+    print(triangles_funcs.get_all_locs_4player(game_settings.board.the_board,p1))
+    moveValidation.move_player(game_settings,p1,)
+    #functions_to_run_game.single_player_turn(game_settings,p1)
     # functions_to_run_game.play(game_settings)
 if __name__ == "__main__":
     main()

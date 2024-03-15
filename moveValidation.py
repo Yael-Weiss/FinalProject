@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from Board import Board
+from board import Board
 from BoardValues import BoardValues
 from player import Player
 from setting_for_game import GameSettings

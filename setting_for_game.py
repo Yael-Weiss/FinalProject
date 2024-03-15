@@ -1,7 +1,7 @@
 from typing import Dict, Tuple, List
 
 
-from Board import Board
+from board import Board
 from BoardValues import BoardValues
 from player import Player
 from triangles import Triangles

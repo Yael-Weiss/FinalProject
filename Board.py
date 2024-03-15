@@ -3,6 +3,7 @@ from typing import Dict, Tuple, List
 from BoardValues import BoardValues
 from player import Player
 from triangles import Triangles
+import triangles_funcs
 
 Coordinates = Tuple[int, int]
 EMOJY_DICT = {
@@ -15,7 +16,10 @@ EMOJY_DICT = {
     BoardValues.GREEN: "🟢",
     BoardValues.ORANGE: "🟠"
 }
-
+EMOJI_NUMS = ["1️⃣ ",
+               "2️⃣ ", "3️⃣ ", "4️⃣ ",
+              "5️⃣ ", "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟"
+]
 
 class Board:
     """
@@ -174,20 +178,20 @@ class Board:
             places_to_fill += 1
         # self.six_corners[Triangles.lower_right_tri] = player_color
 
-    def fill_beginning_triangles(self,players_list:List[Player])->None:
-        #to think about dicts
+    def fill_beginning_triangles(self, players_list: List[Player]) -> None:
+        # to think about dicts
         for player in players_list:
-            if(player.starting_tri==Triangles.upper_tri):
+            if (player.starting_tri == Triangles.upper_tri):
                 self.fill_upper_triangle(player.color)
-            if(player.starting_tri==Triangles.upper_left_tri):
+            if (player.starting_tri == Triangles.upper_left_tri):
                 self.fill_upper_left_triangle(player.color)
-            if(player.starting_tri==Triangles.upper_right_tri):
+            if (player.starting_tri == Triangles.upper_right_tri):
                 self.fill_upper_right_triangle(player.color)
-            if(player.starting_tri==Triangles.lower_right_tri):
+            if (player.starting_tri == Triangles.lower_right_tri):
                 self.fill_lower_right_triangle(player.color)
-            if(player.starting_tri==Triangles.lower_tri):
+            if (player.starting_tri == Triangles.lower_tri):
                 self.fill_lower_triangle(player.color)
-            if(player.starting_tri==Triangles.lower_left_tri):
+            if (player.starting_tri == Triangles.lower_left_tri):
                 self.fill_lower_left_triangle(player.color)
 
     def match_cell_to_emojy(self, player_color: BoardValues):
@@ -195,13 +199,19 @@ class Board:
 
     def clear_screen(self) -> None:
         print("\033[H\033[J", end="")
-    def print_board(self,player:Player=None) -> None:
+
+    def print_board(self, player: Player = None) -> None:
+        if (player != None):
+            player_locs_list = triangles_funcs.get_all_locs_4player(
+                self.the_board, player)
         for i in range(len(self.the_board)):
             for j in range(len(self.the_board[0])):
-                print(self.match_cell_to_emojy(
-                     self.the_board[i][j]), end=" ")
+                if (player != None and (i, j) in player_locs_list):
+                    print(EMOJI_NUMS[player_locs_list.index((i, j))], end=" ")
+                else:
+                    print(self.match_cell_to_emojy(
+                        self.the_board[i][j]), end=" ")
             print()
-    def mark_pieces(self,player:Player):
 
     def cell_content(self, location: Coordinates) -> BoardValues:
         return self.the_board[location[0]][location[1]]
@@ -212,8 +222,6 @@ class Board:
                 and self.the_board[location[0]][location[1]] != BoardValues.OUT_OF_BOARD):
             return True
         return False
-
-    
 
     # def is_winner(self, player: Player, current_loc: Coordinates, go_to: Coordinates) -> bool:
     #     if (self.move_player(player, current_loc, go_to)):

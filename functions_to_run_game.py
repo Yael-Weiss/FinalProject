@@ -1,5 +1,5 @@
 from typing import Tuple, Union
-from Board import Board
+from board import Board
 from player import Player
 from setting_for_game import GameSettings
 import moveValidation

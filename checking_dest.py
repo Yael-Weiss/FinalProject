@@ -1,5 +1,5 @@
 from typing import Tuple
-from Board import Board
+from board import Board
 from player import Player
 from triangles import Triangles
 
