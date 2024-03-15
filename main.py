@@ -7,9 +7,10 @@ from setting_for_game import GameSettings
 from triangles import Triangles
 import triangles_funcs
 import checking_dest
+import functions_to_run_game
 
 Coordinates = Tuple[int, int]
-DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2),(0,2),(0,-2)]
+DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]
 
 def main():
     print("Welcome to Chinese Checkers Game!")
@@ -21,15 +22,7 @@ def main():
     lst=[p1,p2]
     game_settings.board.fill_beginning_triangles(lst)
     game_settings.board.print_board()
-    # move = MoveValidation(game_settings)
-    # # print((4,8) in move.get_list_of_possible_moves((3,9)))
-    # # print(move.is_in_triangle_not_des(p1,(4,8)))
-    # move.move_player(p1,(3,9),(4,8))
-    # game_settings.board.print_board()
-    # print(checking_dest.is_all_in_upper_tri_same_color(game_settings.board,p1))
-    # print(p1.color)
-    # print(move.game_setting.board.cell_content((3,9)))
-    print(moveValidation.get_set_of_possible_jumps(game_settings,(9,11),DIRECTIONS_LIST,set({})))
-
+    functions_to_run_game.single_player_turn(game_settings,p1)
+    # functions_to_run_game.play(game_settings)
 if __name__ == "__main__":
     main()

@@ -19,7 +19,7 @@ TRIANGLES_CHECK = {Triangles.upper_tri: triangles_funcs.is_loc_in_upper_tri,
                    Triangles.lower_right_tri: triangles_funcs.is_loc_in_lower_right_tri,
                    Triangles.lower_left_tri: triangles_funcs.is_loc_in_lower_left_tri,
                    Triangles.upper_right_tri: triangles_funcs.is_loc_in_upper_right_tri}
-DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2),(0,2),(0,-2)]
+DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]
 
 # class MoveValidation:
 #     def __init__(self, game_setting: GameSettings) -> None:

@@ -195,13 +195,13 @@ class Board:
 
     def clear_screen(self) -> None:
         print("\033[H\033[J", end="")
-
-    def print_board(self) -> None:
+    def print_board(self,player:Player=None) -> None:
         for i in range(len(self.the_board)):
             for j in range(len(self.the_board[0])):
                 print(self.match_cell_to_emojy(
-                     self.the_board[i][j]), end="")
+                     self.the_board[i][j]), end=" ")
             print()
+    def mark_pieces(self,player:Player):
 
     def cell_content(self, location: Coordinates) -> BoardValues:
         return self.the_board[location[0]][location[1]]

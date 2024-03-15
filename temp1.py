@@ -57,3 +57,13 @@ print(type(BoardValues.BLUE.name))
 #             get_set_of_possible_jumps((row, col-2), possible_jumps_set)
 
 #     return possible_jumps_set
+
+
+# move = MoveValidation(game_settings)
+    # # print((4,8) in move.get_list_of_possible_moves((3,9)))
+    # # print(move.is_in_triangle_not_des(p1,(4,8)))
+    # move.move_player(p1,(3,9),(4,8))
+    # game_settings.board.print_board()
+    # print(checking_dest.is_all_in_upper_tri_same_color(game_settings.board,p1))
+    # print(p1.color)
+    # print(move.game_setting.board.cell_content((3,9)))
