@@ -23,12 +23,19 @@ def main():
     lst=[p1,p2]
     game_settings.board.fill_beginning_triangles(lst)
     game_settings.board.print_board(p1)
+    piece_to_move=functions_to_run_game.player_choose_piece_to_move(game_settings,p1)
+    print(piece_to_move)
+    # game_settings.board.clear_screen()
+    # moves=list(moveValidation.get_set_of_possible_jumps(game_settings,(3,9),set({})))
+    # game_settings.board.print_board(p1,moves)
+    # print(functions_to_run_game.player_choose_piece_to_move(game_settings,p1))
+    
+    
     # print(triangles_funcs.get_all_locs_4player(game_settings.board.the_board,p1))
-    # print(moveValidation.get_set_of_possible_jumps(game_settings,(3,9),set({})))
     # moveValidation.move_player(game_settings,p1,)
     #functions_to_run_game.single_player_turn(game_settings,p1)
     # functions_to_run_game.play(game_settings)
     
-    game_settings.board.print_board()
+    # game_settings.board.print_board(None,moves)
 if __name__ == "__main__":
     main()

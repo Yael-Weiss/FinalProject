@@ -21,7 +21,7 @@ EMOJY_DICT = {
 EMOJI_NUMS = ["1️⃣ ", "2️⃣ ", "3️⃣ ", "4️⃣ ", "5️⃣ ",
               "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟"]
 EMOJI_POSSIBLE_MOVES=["😽","🐶","🦊","🐒","🐺","🐱","🐷","🐮","🦝","🐯","🐗",
-                     "🐭","🐹","🐰","🐻","🐻‍❄️","🐨","🐼","🐸","🦧","🐔","🐕"]
+                     "🐭","🐹","🐰","🐻","🫎","🐨","🐼","🐸","🦧","🐔","🐕"]
 
 
 class Board:
@@ -203,7 +203,7 @@ class Board:
     def clear_screen(self) -> None:
         print("\033[H\033[J", end="")
 
-    def print_board(self, current_loc:Coordinates,player: Player = None, possible_moves: List[Tuple[int, int]] = None) -> None:
+    def print_board(self,player: Player = None, possible_moves: List[Tuple[int, int]] = None) -> None:
         if (player != None):
             player_locs_list = triangles_funcs.get_all_locs_4player(
                 self.the_board, player)
@@ -212,8 +212,8 @@ class Board:
             for j in range(len(self.the_board[0])):
                 if (player != None and (i, j) in player_locs_list):
                     print(EMOJI_NUMS[player_locs_list.index((i, j))], end=" ")
-                if(possible_moves!=None and (i,j) in possible_moves):
-                    print(EMOJI_POSSIBLE_MOVES[possible_moves.index((i,j))])
+                elif(possible_moves!=None and (i,j) in possible_moves):
+                    print(EMOJI_POSSIBLE_MOVES[possible_moves.index((i,j))],end=" ")
                 else:
                     print(self.match_cell_to_emojy(
                         self.the_board[i][j]), end=" ")

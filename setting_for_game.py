@@ -52,5 +52,6 @@ class GameSettings:
 
 
 if __name__ == "__main__":
-    game=GameSettings()
-    game.get_players_list()
+    # game=GameSettings()
+    # game.get_players_list()
+    pass
