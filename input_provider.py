@@ -64,4 +64,5 @@ if __name__ == "__main__":
     # print(type(r))
     # # print_message_dialog_or_quit('lets start the game! Press ENTER to quit.',"lets go!")
     # print(type(get_input_dialog("what is your name?")))
-    print(get_input_with_autocomplete("what is your name?",["🫎","🐕","🐼"]))
+    # print(get_input_with_autocomplete("what is your name?",["🫎","🐕","🐼"]))
+    message_dialog("ggg","the winner is...! \nGood job everyone, the game ended")

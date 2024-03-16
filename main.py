@@ -14,21 +14,35 @@ Coordinates = Tuple[int, int]
 DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]
 
 def main():
-    print("Welcome to Chinese Checkers Game!")
-    board = Board()
-    game_settings = GameSettings()
-    # game_settings.init_board()
-    p1=Player("y",BoardValues.RED,Triangles.upper_tri)
-    p2=Player("a",BoardValues.BLUE,Triangles.lower_tri)
-    lst=[p1,p2]
-    game_settings.board.fill_beginning_triangles(lst)
-    game_settings.board.print_board(p1)
-    piece_to_move=functions_to_run_game.player_choose_piece_to_move(game_settings,p1)
-    print(piece_to_move)
-    # game_settings.board.clear_screen()
-    # moves=list(moveValidation.get_set_of_possible_jumps(game_settings,(3,9),set({})))
+    functions_to_run_game.play()
+    # print("Welcome to Chinese Checkers Game!")
+    # board = Board()
+    # game_settings = GameSettings()
+    # # game_settings.init_board()
+    # p1=Player("y",BoardValues.RED,Triangles.upper_tri)
+    # p2=Player("a",BoardValues.BLUE,Triangles.lower_tri)
+    # lst=[p1,p2]
+    # game_settings.board.fill_beginning_triangles(lst)
+    # game_settings.players_list=lst
+    # print(moveValidation.move_player(game_settings,p1,(3,9),(4,8)))
+    # # game_settings.board.print_board()
+    # print(checking_dest.are_all_lower_tri_same_color(game_settings.board,p1))
+    # print(p1.destination_tri)
+    # print(checking_dest.is_all_in_dest(game_settings.board,p1))
+    # # functions_to_run_game.single_round(game_settings)   
+    
+    
+    # print(moveValidation.get_set_of_possible_jumps(game_settings,(3,9),set({})))
+    # game_settings.board.print_board(p1)
+    # piece_to_move=functions_to_run_game.player_choose_piece_to_move(game_settings,p1)
+    # print(piece_to_move)
+    # # game_settings.board.clear_screen()
+    # moves=list(moveValidation.get_all_possible_moves(game_settings,piece_to_move))
+    # print(moves)
     # game_settings.board.print_board(p1,moves)
-    # print(functions_to_run_game.player_choose_piece_to_move(game_settings,p1))
+    # go_to=functions_to_run_game.player_choose_destination(game_settings,p1,piece_to_move)
+    # print(go_to)
+    # # # print(functions_to_run_game.player_choose_piece_to_move(game_settings,p1))
     
     
     # print(triangles_funcs.get_all_locs_4player(game_settings.board.the_board,p1))
