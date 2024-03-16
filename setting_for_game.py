@@ -6,6 +6,7 @@ from BoardValues import BoardValues
 from player import Player
 from triangles import Triangles
 import triangles_funcs
+import input_provider
 
 TRIANGLES_DICT = {2: [Triangles.upper_tri, Triangles.lower_tri],
                   3: [Triangles.upper_tri, Triangles.lower_left_tri, Triangles.lower_right_tri],
@@ -31,34 +32,25 @@ class GameSettings:
         self.players_list = self.get_players_list()
         self.board.fill_beginning_triangles(self.players_list)
 
-    def get_players_list(self) -> List[Player]:
-        #creat color dict/ for run on BoardValues
+    def get_players_list(self):# -> List[Player]:
+        #create color dict/ for run on BoardValues
         players_lst = []
-        num_of_players = input("How many players would like to play? the game fits for 2-6 players.\n")
-        while (True):  # checks that num_of_players got a valid input
-            if(str(num_of_players).isdigit()):
-                if (1 <= int(num_of_players) <= 6):  # to enter maxnumofplayers
-                    break
-            num_of_players = input(
-                "Invalid input. Let's try again, how many players would like to play? \n")
+        num_of_players=input_provider.get_input_in_radiolist_dialog("How many players would like to play? the game fits for 2-6 players.",
+                                                        [(2,"2"),(3,"3"),(4,"4"),(5, "5"), (6,"6")])
         
-        num_of_players = int(num_of_players)
-        for i in range(num_of_players):
-            colors_str = ', '.join(COLORS_DICT.keys())
-            name_player = input(
-                f"What is the name of the player number #{i+1}?: \n")
-            color_player = input(
-                f"What color would you like to be? please choose one of the next options: {colors_str} \n")
-            while (True):
-                if (color_player in COLORS_DICT.keys()):
-                    break
-                color_player = input(
-                    f"Invalid input. What color would you like to be? please choose one of the next options: {colors_str}\n")
-            player = Player(name_player, COLORS_DICT[color_player], TRIANGLES_DICT[num_of_players][i])
+        COLORS_LIST=[(b,b.name) for b in BoardValues]   
+        COLORS_LIST.remove((BoardValues.EMPTY,BoardValues.EMPTY.name))
+        COLORS_LIST.remove((BoardValues.OUT_OF_BOARD,BoardValues.OUT_OF_BOARD.name))     
+        for j in range(num_of_players):
+            name_player=input_provider.get_input_dialog(f"What is the name of the player number #{j+1}?: \n")
+            color_player = input_provider.get_input_in_radiolist_dialog(f"Hello {name_player}, What color would you like to be?",COLORS_LIST)
+            print(f"name:{name_player}, color:{color_player}")
+            player = Player(name_player, color_player, TRIANGLES_DICT[num_of_players][j])
             players_lst.append(player)
-            COLORS_DICT.pop(color_player)
+            COLORS_LIST.remove((color_player,color_player.name))
         return players_lst        
 
 
 if __name__ == "__main__":
-    pass
+    game=GameSettings()
+    game.get_players_list()

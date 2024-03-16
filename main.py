@@ -8,6 +8,7 @@ from triangles import Triangles
 import triangles_funcs
 import checking_dest
 import functions_to_run_game
+import prompt_toolkit
 
 Coordinates = Tuple[int, int]
 DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]

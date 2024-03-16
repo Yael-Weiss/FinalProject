@@ -4,6 +4,8 @@ from BoardValues import BoardValues
 from player import Player
 from triangles import Triangles
 import triangles_funcs
+import unittest
+
 
 Coordinates = Tuple[int, int]
 EMOJY_DICT = {
