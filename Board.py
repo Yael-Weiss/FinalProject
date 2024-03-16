@@ -205,6 +205,8 @@ class Board:
         print("\033[H\033[J", end="")
 
     def print_board(self,player: Player = None, possible_moves: List[Tuple[int, int]] = None) -> None:
+        # BACKGROUND_COLOR = '\033[103m'
+        # BACKGROUND_RESET = '\033[0m'
         if (player != None):
             player_locs_list = triangles_funcs.get_all_locs_4player(
                 self.the_board, player)

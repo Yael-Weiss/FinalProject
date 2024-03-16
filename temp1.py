@@ -12,9 +12,15 @@ colors_dic= {BoardValues.RED.name: BoardValues.RED.value,
 # colors_str=', '.join(colors_dic.keys())
 # # name_player1=input("What is the name of the first player? ")
 # color_player1=input(f"What color would you like to be? please choose one of the options: {colors_str}")
-print(type(BoardValues.BLUE.name))
+# print(type(BoardValues.BLUE.name))
 # colors_dic.pop(str(BoardValues.RED))
 # print(colors_dic)
+# ANSI escape codes for changing the background color
+BACKGROUND_YELLOW = '\033[43m'
+BACKGROUND_RESET = '\033[0m'
+
+# Print text with yellow background
+print(BACKGROUND_YELLOW + "This text has a yellow background." + BACKGROUND_RESET)
 
 
 

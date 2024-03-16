@@ -16,7 +16,7 @@ def is_end_game(game_settings: GameSettings, player: Player) -> bool:
 
 def is_winner(game_settings: GameSettings, player: Player):
     # needs to add case that there are stuck pieces inside
-    if (checking_dest.is_all_in_dest(game_settings.board, player)):
+    if (checking_dest.is_p1_win_in_dest(game_settings, player)):
         return True
     return False
 
@@ -27,17 +27,22 @@ def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> 
     emojy_nums = EMOJI_NUMS
     print(emojy_nums)
     while (True):
-        emojy = input_provider.get_input_with_autocomplete(
-            "What piece would you like to move? Click Tab key to see the options.",
-            emojy_nums)
+        while (True):
+            emojy = input_provider.get_input_with_autocomplete(
+                "What piece would you like to move? Click Tab key to see the options and choose from them.",
+                emojy_nums)
 
-        if (emojy in emojy_nums):
+            if (emojy in emojy_nums):
+                break
+
+            print("Invalid input, let's try again.")
+
+        index_in_players_locs = emojy_nums.index(emojy)
+        current_loc = player_locs_list[index_in_players_locs]
+        if(moveValidation.get_all_possible_moves(game_settings,current_loc)!=[]):
             break
+        print("This piece has no place to move, please choose another one.")
 
-        print("Invalid input, let's try again.")
-
-    index_in_players_locs = emojy_nums.index(emojy)
-    current_loc = player_locs_list[index_in_players_locs]
     return current_loc
 
 
@@ -88,7 +93,7 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> None:
 
 
 def single_round(game_settings: GameSettings) -> Union[Player, None]:
-    print(game_settings.players_list)
+    # print(game_settings.players_list)
     for player in game_settings.players_list:
         single_player_turn(game_settings, player)
         if (is_winner(game_settings, player)):
@@ -96,13 +101,12 @@ def single_round(game_settings: GameSettings) -> Union[Player, None]:
     return None
 
 
-def play() -> None:
+def play(game_settings:GameSettings) -> None:
     # """
     # The main driver of the Game. Manages the game until completion.
     # :return: None
     # """
-    game_settings = GameSettings()
-    game_settings.init_board()
+    
     end_game = False
     while (not end_game):
         player = single_round(game_settings)

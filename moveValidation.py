@@ -63,12 +63,12 @@ def get_set_of_possible_jumps(game_settings: GameSettings, current_location: Coo
     for direction in directions_list:
         jump_to = (row+direction[0], col+direction[1])
         if (game_settings.board.is_on_board(jump_to)):
-            # if(game_settings.board.the_board[jump_to[0]][jump_to[1]] != BoardValues.EMPTY
-            #    and game_settings.board.the_board[jump_to[0]][jump_to[1]] != BoardValues.OUT_OF_BOARD):
-            if (game_settings.board.the_board[jump_to[0]][jump_to[1]] == BoardValues.EMPTY and jump_to not in possible_jumps_set):
-                possible_jumps_set.add(jump_to)
-                get_set_of_possible_jumps(
-                    game_settings, jump_to, possible_jumps_set)
+            if(game_settings.board.the_board[(row+jump_to[0])//2][(col+jump_to[1])//2] != BoardValues.EMPTY
+               and game_settings.board.the_board[(row+jump_to[0])//2][(col+jump_to[1])//2] != BoardValues.OUT_OF_BOARD):
+                if (game_settings.board.the_board[jump_to[0]][jump_to[1]] == BoardValues.EMPTY and jump_to not in possible_jumps_set):
+                    possible_jumps_set.add(jump_to)
+                    get_set_of_possible_jumps(
+                        game_settings, jump_to, possible_jumps_set)
     return possible_jumps_set
 
 
@@ -86,7 +86,7 @@ def is_in_destination(player: Player, loc: Coordinates) -> bool:
 
 def is_in_triangle_not_des(player: Player, loc: Coordinates) -> bool:
     for tri in TRIANGLES_CHECK.keys():
-        if (player.destination_tri != tri):
+        if (player.destination_tri != tri and player.starting_tri != tri):
             if (TRIANGLES_CHECK[tri](loc)):
                 return True
     return False
