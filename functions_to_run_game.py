@@ -1,11 +1,13 @@
 from typing import Tuple, Union
 from board import EMOJI_NUMS, EMOJI_POSSIBLE_MOVES, Board
+from logger import Logger
 from player import Player
 from setting_for_game import GameSettings
 import moveValidation
 import checking_dest
 import triangles_funcs
 import input_provider
+import random
 
 Coordinates = Tuple[int, int]
 
@@ -25,7 +27,6 @@ def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> 
     player_locs_list = triangles_funcs.get_all_locs_4player(
         game_settings.board.the_board, player)
     emojy_nums = EMOJI_NUMS
-    print(emojy_nums)
     while (True):
         while (True):
             emojy = input_provider.get_input_with_autocomplete(
@@ -71,8 +72,26 @@ def player_choose_destination(game_settings: GameSettings, player: Player, curre
     go_to = all_possible_moves[index_in_possible_moves]
     return go_to
 
+def single_comp_turn(game_settings: GameSettings, comp_player: Player) ->Tuple[Coordinates, Coordinates]:
+    while (True):
+        current_loc = random.choice(triangles_funcs.get_all_locs_4player(
+            game_settings.board.the_board, comp_player))
+        
+        if (moveValidation.is_valid_current_loc(game_settings, comp_player, current_loc)):
+            break
+    
+    while (True):
+        go_to = random.choice(moveValidation.get_all_possible_moves(game_settings, current_loc))
+        
+        if (moveValidation.is_valid_move(game_settings, comp_player, current_loc, go_to)):
+            break
 
-def single_player_turn(game_settings: GameSettings, player: Player) -> None:
+    moveValidation.move_player(game_settings, comp_player, current_loc, go_to)
+    game_settings.board.clear_screen()
+    game_settings.board.print_board()
+    return (current_loc, go_to)
+
+def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coordinates, Coordinates]:
     game_settings.board.print_board(player)
     while (True):
         current_loc = player_choose_piece_to_move(game_settings, player)
@@ -90,12 +109,17 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> None:
     moveValidation.move_player(game_settings, player, current_loc, go_to)
     game_settings.board.clear_screen()
     game_settings.board.print_board()
+    return (current_loc, go_to)
 
 
 def single_round(game_settings: GameSettings) -> Union[Player, None]:
     # print(game_settings.players_list)
     for player in game_settings.players_list:
-        single_player_turn(game_settings, player)
+        if(player.is_comp):
+            current_loc,go_to=single_comp_turn(game_settings, player)
+        else:
+            current_loc,go_to=single_player_turn(game_settings, player)
+        Logger.add_message(player.name, current_loc, go_to)
         if (is_winner(game_settings, player)):
             return player
     return None
@@ -106,7 +130,17 @@ def play(game_settings:GameSettings) -> None:
     # The main driver of the Game. Manages the game until completion.
     # :return: None
     # """
-    
+    introduction = """Let's start the game! \n
+    Before we begin: \n
+    In the next window you will see the board.\n
+    Each turn the pieces of the relevant player are marked as numbers and
+    the player needs to choose which piece he wants to move. \n
+    After that, emojies will appear on the board. \n
+    The emojies represent the places that the player can move the piece to.\n
+    Enjoy and Good luck!"""
+    input_provider.print_message_dialog_or_quit(introduction,"Lets go!")
+    game_settings.board.print_board()
+    input_provider.print_message_dialog_or_quit(f"{game_settings.players_list[0].name}, you go first!","lets go!")
     end_game = False
     while (not end_game):
         player = single_round(game_settings)

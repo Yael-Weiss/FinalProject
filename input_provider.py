@@ -9,6 +9,8 @@ from prompt_toolkit.completion import Completer, Completion
 from prompt_toolkit.styles import Style
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.shortcuts import yes_no_dialog
+
 # Define custom style
 custom_style = Style.from_dict({
     'completion-menu.completion': 'bg:#008998 #ffffff',
@@ -16,6 +18,7 @@ custom_style = Style.from_dict({
     # 'scrollbar.background': 'bg:#88aaaa',
     # 'scrollbar.button': 'bg:#222222',
 })
+
 
 # Define custom completer
 class MyCompleter(Completer):
@@ -58,11 +61,26 @@ def get_input_in_radiolist_dialog(question:str, answers_options:List[Tuple[any,s
     result = radiolist_dialog(title_on_top,question,ok_text="continue",
                               values=answers_options).run()
     return result
+def make_yes_no_dialog(title_on_top:str,question:str)->bool:
+    return yes_no_dialog(
+        title=title_on_top,
+        text=question).run()
 
 if __name__ == "__main__":
     #r=get_input_in_radiolist_dialog("welcome","how many",[(111,"1"),(BoardValues.RED,"2")])
     # print(type(r))
-    # # print_message_dialog_or_quit('lets start the game! Press ENTER to quit.',"lets go!")
-    # print(type(get_input_dialog("what is your name?")))
+    introduction = """'lets start the game! \n
+    Before we begin: \n
+    In the next window you will see the board.\n
+    Each turn the pieces of the relevant player are marked and
+    he needs to choose which one he wants to move. \n
+    After that, emojies will appear on the board. \n
+    The emojies represent the places that the player can move the piece to.\n
+    Enjoy and Good luck!'"""
+    print_message_dialog_or_quit(introduction,"Lets go!")
+    # print(3)
+    # # print(type(get_input_dialog("what is your name?")))
     # print(get_input_with_autocomplete("what is your name?",["🫎","🐕","🐼"]))
-    message_dialog("ggg","the winner is...! \nGood job everyone, the game ended")
+    #message_dialog("ggg","the winner is...! \nGood job everyone, the game ended")
+    print(make_yes_no_dialog("title","question?"))
+    

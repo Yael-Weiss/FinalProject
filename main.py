@@ -1,6 +1,7 @@
 from typing import Tuple
 from board import Board
 from BoardValues import BoardValues
+from logger import Logger
 import moveValidation
 from player import Player
 from setting_for_game import GameSettings
@@ -9,33 +10,42 @@ import triangles_funcs
 import checking_dest
 import functions_to_run_game
 import prompt_toolkit
+import input_provider
 
 Coordinates = Tuple[int, int]
 DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]
 
 def main():
-    # game_settings = GameSettings()
-    # game_settings.init_board()    
-    # functions_to_run_game.play(game_settings)
+    game_settings = GameSettings()
+    game_settings.init_board() 
+    
+    end_games=False
+    
+    while(not end_games):   
+        game_name=input_provider.get_input_dialog("Pick a name to the game: ")
+        Logger.create_file(game_name,game_settings.players_list)
+        functions_to_run_game.play(game_settings)
+        end_games=input_provider.make_yes_no_dialog("Chinese Checkers Game","Do you want to play again?")
 
     # functions_to_run_game.play()
     # print("Welcome to Chinese Checkers Game!")
-    board = Board()
-    game_settings = GameSettings()
-    # # game_settings.init_board()
-    p1=Player("y",BoardValues.RED,Triangles.upper_tri)
-    p2=Player("a",BoardValues.BLUE,Triangles.lower_tri)
-    lst=[p1,p2]
-    game_settings.board.fill_beginning_triangles(lst)
+    # board = Board()
+    # game_settings = GameSettings()
+    # # # game_settings.init_board()
+    # print(*game_settings.get_all_players_list())
+    # p1=Player("y",BoardValues.RED,Triangles.upper_tri)
+    # p2=Player("a",BoardValues.BLUE,Triangles.lower_tri)
+    # lst=[p1,p2]
+    # game_settings.board.fill_beginning_triangles(lst)
     
-    game_settings.players_list=lst
-    print(moveValidation.move_player(game_settings,p1,(2,10),(4,8)))
-    print(moveValidation.move_player(game_settings,p2,(13,11),(11,9)))
-    p1.destination_tri=Triangles.upper_tri
-    game_settings.board.the_board[0][12]=BoardValues.YELLOW
-    game_settings.board.the_board[4][12]=BoardValues.RED
-    game_settings.board.print_board()
-    functions_to_run_game.play(game_settings)
+    # game_settings.players_list=lst
+    # print(moveValidation.move_player(game_settings,p1,(2,10),(4,8)))
+    # print(moveValidation.move_player(game_settings,p2,(13,11),(11,9)))
+    # p1.destination_tri=Triangles.upper_tri
+    # game_settings.board.the_board[0][12]=BoardValues.YELLOW
+    # game_settings.board.the_board[4][12]=BoardValues.RED
+    # game_settings.board.print_board()
+    # functions_to_run_game.play(game_settings)
     # print(moveValidation.get_set_of_possible_jumps(game_settings,(4,8),set({})))
     # print(moveValidation.get_set_of_possible_jumps(game_settings,(14,12),set({})))
     # functions_to_run_game.play(game_settings)
