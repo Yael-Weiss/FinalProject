@@ -1,8 +1,0 @@
-2024-03-17 21:11:17 Game log - These are the players:
-shir
-red
-False
-Triangles.upper_tri
-Triangles.lower_tri
-
-2024-03-17 21:11:17 , shir , (1, 1) , (2, 2)

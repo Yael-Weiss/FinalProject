@@ -1,0 +1,17 @@
+2024-03-18 00:10:24 Game log - These are the players:
+pashosho
+BoardValues.RED
+False
+Triangles.upper_tri
+Triangles.lower_tri
+Computer #1
+BoardValues.BLUE
+True
+Triangles.lower_tri
+Triangles.upper_tri
+
+These are the moves:
+2024-03-18 00:10:27_pashosho_(3, 15)_(4, 16)
+2024-03-18 00:10:27_Computer #1_(13, 13)_(12, 12)
+2024-03-18 00:10:34_pashosho_(4, 16)_(4, 14)
+2024-03-18 00:10:34_Computer #1_(14, 10)_(12, 8)
