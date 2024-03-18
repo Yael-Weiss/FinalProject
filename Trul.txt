@@ -3,7 +3,7 @@ Ariel
 BoardValues.RED
 False
 Triangles.upper_tri
-Triangles.lower_tri
+Triangles.upper_tri
 Computer #1
 BoardValues.BLUE
 True

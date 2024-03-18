@@ -40,8 +40,12 @@ def read_and_load_log_file(file_name: str)->GameSettings:
     return get_game_settings_from_log(lines_for_game_settings, players_list)
 
 
-def get_players_list_from_log(lines: List[str]) -> list[Player]:
+def get_players_list_from_log(lines: List[str],game_number:int=1) -> list[Player]:
     players_list = []
+    # for i in range(len(lines)):
+    #     if(f"Game {game_number}" in lines[i]):
+    #         lines = lines[i+1:]
+    #         break
     for index in range(0, len(lines), 5):
         players_list.append(Player(lines[index],
                                    COLORS[lines[index+1]],
@@ -50,8 +54,7 @@ def get_players_list_from_log(lines: List[str]) -> list[Player]:
     return players_list
 
 
-def get_game_settings_from_log(lines: List[str], players_list: List[Player]) -> GameSettings:
-
+def get_game_settings_from_log(lines: List[str], players_list: List[Player],game_number:int=1) -> GameSettings:
     game_settings = GameSettings()
     game_settings.players_list = players_list
     game_settings.init_only_board()
@@ -64,6 +67,7 @@ def get_game_settings_from_log(lines: List[str], players_list: List[Player]) -> 
         go_to = from_str_to_coordinates(splited_line[3])
         moveValidation.move_player(
             game_settings, player_to_move, current_loc, go_to)
+    game_settings.score_board.init_players(game_settings.players_list)
     return game_settings
 
 

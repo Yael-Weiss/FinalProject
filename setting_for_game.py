@@ -38,6 +38,7 @@ class GameSettings:
     def init_board(self) -> None:
         self.players_list = self.get_all_players_list()
         self.board.fill_beginning_triangles(self.players_list)
+        self.score_board.init_players(self.players_list)
        
 
     def no_more_player_same_name(self, name: str, players_list: List[Player]) -> bool:

@@ -157,13 +157,14 @@ def play(game_settings:GameSettings) -> None:
     Enjoy and Good luck!"""
     input_provider.print_message_dialog_or_quit(introduction,"Lets go!")
     game_settings.board.print_board()
-    print(*game_settings.players_list)
+
     input_provider.print_message_dialog_or_quit(f"{game_settings.players_list[0].name}, you go first!","lets go!")
     end_game = False
     while (not end_game):
         player = single_round(game_settings)
         if (player != None):
             end_game = True
+    print(*game_settings.players_list)
     game_settings.score_board.add_winner(player)
     for p in game_settings.players_list:
         if p != player:
