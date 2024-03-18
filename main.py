@@ -21,17 +21,18 @@ DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]
 
 def main():
     game_settings = GameSettings()
-    
-    another_game=True
-    while(another_game):
-        end_game=False
-        while(not end_game):   
-            game_settings=functions_to_run_game.create_game_settings(game_settings)
-            game_settings.players_list[0].destination_tri=Triangles.upper_tri    
+    another_game=False
+    while(True):
+        game_settings=functions_to_run_game.create_new_game_settings(game_settings)
+        game_settings.players_list[0].destination_tri=Triangles.upper_tri
+        while(True): 
+            Logger.start_new_game_log()  
             functions_to_run_game.play(game_settings)
-            end_game=True
             another_game=input_provider.make_yes_no_dialog("Chinese Checkers Game","Do you want to play again?")
-
+            if not another_game:
+                break
+            game_settings.init_only_board()
+        break
 
 
 

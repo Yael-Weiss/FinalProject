@@ -16,24 +16,26 @@ Coordinates = Tuple[int, int]
 def is_end_game(game_settings: GameSettings, player: Player) -> bool:
     pass
 
-def create_game_settings(game_settings:GameSettings) -> GameSettings:
+
+def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
     is_new_game = input_provider.make_yes_no_dialog("Welcome to Chinese Checkers Game!",
-                                                        "Do you want to load a game or to start a new one?",
-                                                        "start a new game", "load a game")
+                                                    "Do you want to load a game or to start a new one?",
+                                                    "start a new game", "load a game")
     if (is_new_game):
         game_settings.init_board()
         game_name = input_provider.get_input_dialog(
-            "Pick a name to the game: ")
+            "Pick a name to the Turnir file: ")
         Logger.create_file(game_name, game_settings.players_list)
 
     else:
         file_name = input_provider.get_input_dialog(
             "Enter the name of the game you want to load: ")
-        Logger.name=file_name
+        Logger.name = file_name
         game_settings = read_logger.read_and_load_log_file(
             file_name+".txt")
-        
     return game_settings
+
+
 def is_winner(game_settings: GameSettings, player: Player):
     # needs to add case that there are stuck pieces inside
     if (checking_dest.is_p1_win_in_dest(game_settings, player)):
@@ -58,7 +60,7 @@ def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> 
 
         index_in_players_locs = emojy_nums.index(emojy)
         current_loc = player_locs_list[index_in_players_locs]
-        if(moveValidation.get_all_possible_moves(game_settings,current_loc)!=[]):
+        if (moveValidation.get_all_possible_moves(game_settings, current_loc) != []):
             break
         print("This piece has no place to move, please choose another one.")
 
@@ -90,17 +92,19 @@ def player_choose_destination(game_settings: GameSettings, player: Player, curre
     go_to = all_possible_moves[index_in_possible_moves]
     return go_to
 
-def single_comp_turn(game_settings: GameSettings, comp_player: Player) ->Tuple[Coordinates, Coordinates]:
+
+def single_comp_turn(game_settings: GameSettings, comp_player: Player) -> Tuple[Coordinates, Coordinates]:
     while (True):
         current_loc = random.choice(triangles_funcs.get_all_locs_4player(
             game_settings.board.the_board, comp_player))
-        
+
         if (moveValidation.is_valid_current_loc(game_settings, comp_player, current_loc)):
             break
-    
+
     while (True):
-        go_to = random.choice(moveValidation.get_all_possible_moves(game_settings, current_loc))
-        
+        go_to = random.choice(
+            moveValidation.get_all_possible_moves(game_settings, current_loc))
+
         if (moveValidation.is_valid_move(game_settings, comp_player, current_loc, go_to)):
             break
 
@@ -108,6 +112,7 @@ def single_comp_turn(game_settings: GameSettings, comp_player: Player) ->Tuple[C
     game_settings.board.clear_screen()
     game_settings.board.print_board()
     return (current_loc, go_to)
+
 
 def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coordinates, Coordinates]:
     game_settings.board.print_board(player)
@@ -133,17 +138,17 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coo
 def single_round(game_settings: GameSettings) -> Union[Player, None]:
     # print(game_settings.players_list)
     for player in game_settings.players_list:
-        if(player.is_comp):
-            current_loc,go_to=single_comp_turn(game_settings, player)
+        if (player.is_comp):
+            current_loc, go_to = single_comp_turn(game_settings, player)
         else:
-            current_loc,go_to=single_player_turn(game_settings, player)
+            current_loc, go_to = single_player_turn(game_settings, player)
         Logger.add_message(player.name, current_loc, go_to)
         if (is_winner(game_settings, player)):
             return player
     return None
 
 
-def play(game_settings:GameSettings) -> None:
+def play(game_settings: GameSettings) -> None:
     # """
     # The main driver of the Game. Manages the game until completion.
     # :return: None
@@ -155,22 +160,26 @@ def play(game_settings:GameSettings) -> None:
     After that, emojies will appear on the board. \n
     The emojies represent the places that the player can move the piece to.\n
     Enjoy and Good luck!"""
-    input_provider.print_message_dialog_or_quit(introduction,"Lets go!")
+    input_provider.print_message_dialog_or_quit(introduction, "Lets go!")
     game_settings.board.print_board()
 
-    input_provider.print_message_dialog_or_quit(f"{game_settings.players_list[0].name}, you go first!","lets go!")
+    input_provider.print_message_dialog_or_quit(
+        f"{game_settings.players_list[0].name}, you go first!", "lets go!")
     end_game = False
     while (not end_game):
         player = single_round(game_settings)
         if (player != None):
             end_game = True
-    print(*game_settings.players_list)
+    
     game_settings.score_board.add_winner(player)
     for p in game_settings.players_list:
         if p != player:
             game_settings.score_board.add_loser(player)
+    Logger.add_scores_message(game_settings.score_board.get_str_scores())
     input_provider.print_message_dialog_or_quit(
         game_settings.score_board.get_str_scores()+f"\nGood job everyone, the game ended.", "Game Ended!")
+    # game_settings.score_board.()
+    game_settings.board.print_board()
 
 
 if __name__ == "__main__":

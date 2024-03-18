@@ -30,22 +30,27 @@ def from_str_to_coordinates(str: str):  # -> tuple[int,int]:
     num2 = str[coma_index+1:len(str)-1]
     return (int(num1), int(num2))
 
-def read_and_load_log_file(file_name: str)->GameSettings:
+
+def read_and_load_log_file(file_name: str) -> GameSettings:
     with open(file_name, 'r') as f:
         lines = [line.strip() for line in f.readlines()]
-    index = lines.index("")
-    lines_for_players_list = lines[1:index]
-    lines_for_game_settings = lines[index+2:]
+    last_line_of_players = lines.index("")
+    lines_for_players_list = lines[1:last_line_of_players]
     players_list = get_players_list_from_log(lines_for_players_list)
+
+    for j in range(len(lines)-1, -1, -1):
+        if ("These are the moves:" == lines[j]):
+            lines = lines[j:]
+            break
+
+    last_line_of_moves = lines.index("")
+    lines_for_game_settings = lines[1:last_line_of_moves]
+
     return get_game_settings_from_log(lines_for_game_settings, players_list)
 
 
-def get_players_list_from_log(lines: List[str],game_number:int=1) -> list[Player]:
+def get_players_list_from_log(lines: List[str], game_number: int = 1) -> list[Player]:
     players_list = []
-    # for i in range(len(lines)):
-    #     if(f"Game {game_number}" in lines[i]):
-    #         lines = lines[i+1:]
-    #         break
     for index in range(0, len(lines), 5):
         players_list.append(Player(lines[index],
                                    COLORS[lines[index+1]],
@@ -54,7 +59,7 @@ def get_players_list_from_log(lines: List[str],game_number:int=1) -> list[Player
     return players_list
 
 
-def get_game_settings_from_log(lines: List[str], players_list: List[Player],game_number:int=1) -> GameSettings:
+def get_game_settings_from_log(lines: List[str], players_list: List[Player], game_number: int = 1) -> GameSettings:
     game_settings = GameSettings()
     game_settings.players_list = players_list
     game_settings.init_only_board()
@@ -71,7 +76,7 @@ def get_game_settings_from_log(lines: List[str], players_list: List[Player],game
     return game_settings
 
 
-#players_list = get_players_list_from_log("Trol.txt")
+# players_list = get_players_list_from_log("Trol.txt")
 # game = read_and_load_log_file("ARiel.txt")
 # game.board.print_board()
 # print(game.players_list[0].name)
