@@ -11,35 +11,47 @@ import checking_dest
 import functions_to_run_game
 import prompt_toolkit
 import input_provider
+import read_logger
 
 Coordinates = Tuple[int, int]
 DIRECTIONS_LIST=[(-2,-2),(-2,2),(2,-2),(2,2)]
 
+
+
+
 def main():
     game_settings = GameSettings()
-    game_settings.init_board() 
-    
     end_games=False
-    
     while(not end_games):   
-        game_name=input_provider.get_input_dialog("Pick a name to the game: ")
-        Logger.create_file(game_name,game_settings.players_list)
+        game_settings=functions_to_run_game.create_game_settings(game_settings)      
         functions_to_run_game.play(game_settings)
         end_games=input_provider.make_yes_no_dialog("Chinese Checkers Game","Do you want to play again?")
 
+
+
+
+
+
+
     # functions_to_run_game.play()
-    # print("Welcome to Chinese Checkers Game!")
     # board = Board()
     # game_settings = GameSettings()
-    # # # game_settings.init_board()
-    # print(*game_settings.get_all_players_list())
     # p1=Player("y",BoardValues.RED,Triangles.upper_tri)
     # p2=Player("a",BoardValues.BLUE,Triangles.lower_tri)
     # lst=[p1,p2]
     # game_settings.board.fill_beginning_triangles(lst)
     
     # game_settings.players_list=lst
-    # print(moveValidation.move_player(game_settings,p1,(2,10),(4,8)))
+    # moveValidation.move_player(game_settings,p1,(3,15),(4,16))
+    # game_settings.board.print_board()
+    # moveValidation.move_player(game_settings,p1,(2,12),(4,12))
+    # moveValidation.move_player(game_settings,p1,(0,12),(2,12))
+    # possible_moves=moveValidation.get_all_possible_moves(game_settings,(2,12))
+    # game_settings.board.print_board(p1,possible_moves)    
+    # print(possible_moves)
+    # print(moveValidation.is_in_triangle_not_des_not_start(p1,(4,18)))
+    # print(possible_moves)
+    # print(game_settings.board.print_board(p1,possible_moves))
     # print(moveValidation.move_player(game_settings,p2,(13,11),(11,9)))
     # p1.destination_tri=Triangles.upper_tri
     # game_settings.board.the_board[0][12]=BoardValues.YELLOW
@@ -77,3 +89,4 @@ def main():
     # game_settings.board.print_board(None,moves)
 if __name__ == "__main__":
     main()
+    

@@ -8,6 +8,7 @@ import checking_dest
 import triangles_funcs
 import input_provider
 import random
+import read_logger
 
 Coordinates = Tuple[int, int]
 
@@ -15,7 +16,24 @@ Coordinates = Tuple[int, int]
 def is_end_game(game_settings: GameSettings, player: Player) -> bool:
     pass
 
+def create_game_settings(game_settings:GameSettings) -> GameSettings:
+    is_new_game = input_provider.make_yes_no_dialog("Welcome to Chinese Checkers Game!",
+                                                        "Do you want to load a game or to start a new one?",
+                                                        "start a new game", "load a game")
+    if (is_new_game):
+        game_settings.init_board()
+        game_name = input_provider.get_input_dialog(
+            "Pick a name to the game: ")
+        Logger.create_file(game_name, game_settings.players_list)
 
+    else:
+        file_name = input_provider.get_input_dialog(
+            "Enter the name of the game you want to load: ")
+        Logger.name=file_name
+        game_settings = read_logger.read_and_load_log_file(
+            file_name+".txt")
+        
+    return game_settings
 def is_winner(game_settings: GameSettings, player: Player):
     # needs to add case that there are stuck pieces inside
     if (checking_dest.is_p1_win_in_dest(game_settings, player)):
@@ -130,8 +148,7 @@ def play(game_settings:GameSettings) -> None:
     # The main driver of the Game. Manages the game until completion.
     # :return: None
     # """
-    introduction = """Let's start the game! \n
-    Before we begin: \n
+    introduction = """Before we begin: \n
     In the next window you will see the board.\n
     Each turn the pieces of the relevant player are marked as numbers and
     the player needs to choose which piece he wants to move. \n
@@ -140,14 +157,19 @@ def play(game_settings:GameSettings) -> None:
     Enjoy and Good luck!"""
     input_provider.print_message_dialog_or_quit(introduction,"Lets go!")
     game_settings.board.print_board()
+    print(*game_settings.players_list)
     input_provider.print_message_dialog_or_quit(f"{game_settings.players_list[0].name}, you go first!","lets go!")
     end_game = False
     while (not end_game):
         player = single_round(game_settings)
         if (player != None):
             end_game = True
+    game_settings.score_board.add_winner(player)
+    for p in game_settings.players_list:
+        if p != player:
+            game_settings.score_board.add_loser(player)
     input_provider.print_message_dialog_or_quit(
-        f"the winner is....{player.name}! \nGood job everyone, the game ended", "Game Ended!")
+        game_settings.score_board.get_str_scores()+f"\nGood job everyone, the game ended.", "Game Ended!")
 
 
 if __name__ == "__main__":

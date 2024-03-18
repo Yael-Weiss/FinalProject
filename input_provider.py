@@ -61,10 +61,10 @@ def get_input_in_radiolist_dialog(question:str, answers_options:List[Tuple[any,s
     result = radiolist_dialog(title_on_top,question,ok_text="continue",
                               values=answers_options).run()
     return result
-def make_yes_no_dialog(title_on_top:str,question:str)->bool:
+def make_yes_no_dialog(title_on_top:str,question:str,yes_buttom:str="Yes",no_buttom:str="No")->bool:
     return yes_no_dialog(
         title=title_on_top,
-        text=question).run()
+        text=question,yes_text=yes_buttom,no_text=no_buttom).run()
 
 if __name__ == "__main__":
     #r=get_input_in_radiolist_dialog("welcome","how many",[(111,"1"),(BoardValues.RED,"2")])

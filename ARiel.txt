@@ -1,0 +1,17 @@
+2024-03-18 13:22:33 Game log - These are the players:
+ar
+BoardValues.RED
+False
+Triangles.upper_tri
+Triangles.lower_tri
+Computer #1
+BoardValues.BLUE
+True
+Triangles.lower_tri
+Triangles.upper_tri
+
+These are the moves:
+2024-03-18 13:22:44_ar_(3, 15)_(4, 16)
+2024-03-18 13:22:44_Computer #1_(14, 12)_(12, 10)
+2024-03-18 13:23:05_ar_(2, 14)_(4, 12)
+2024-03-18 13:23:05_Computer #1_(14, 14)_(12, 14)

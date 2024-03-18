@@ -3,7 +3,9 @@ from typing import Dict, Tuple, List
 
 from board import Board
 from BoardValues import BoardValues
+from logger import Logger
 from player import Player
+from scores_board import ScoresBoard
 from triangles import Triangles
 import triangles_funcs
 import input_provider
@@ -28,6 +30,7 @@ class GameSettings:
     def __init__(self) -> None:
         self.board = Board()
         self.players_list = []
+        self.score_board = ScoresBoard()
 
     def init_only_board(self) -> None:
         self.board.fill_beginning_triangles(self.players_list)
@@ -35,6 +38,7 @@ class GameSettings:
     def init_board(self) -> None:
         self.players_list = self.get_all_players_list()
         self.board.fill_beginning_triangles(self.players_list)
+       
 
     def no_more_player_same_name(self, name: str, players_list: List[Player]) -> bool:
         if (name == ""):
@@ -81,7 +85,10 @@ class GameSettings:
                                                                            possible_num_of_players)
 
         possible_num_of_real_players = []
-        for i in range(1, POSSIBLE_NUM_OF_PLAYERS-num_of_comp_players+1):
+        start = 1
+        if (num_of_comp_players == 0):
+            start = 2
+        for i in range(start, POSSIBLE_NUM_OF_PLAYERS-num_of_comp_players+1):
             possible_num_of_real_players.append((i, str(i)))
 
         num_of_real_players = input_provider.get_input_in_radiolist_dialog("How many real players would like to play? ",
@@ -95,22 +102,39 @@ class GameSettings:
             (BoardValues.OUT_OF_BOARD, BoardValues.OUT_OF_BOARD.name))
         return COLORS_LIST
 
+    def not_only_spaces(self, name: str) -> bool:
+        for i in name:
+            if (i != " "):
+                return True
+        return False
+
     def get_real_players_list(self, num_of_real_players: int, total_num_players: int) -> List[Player]:
         real_players_lst = []
         COLORS_LIST = self.get_colors_list()
         for j in range(num_of_real_players):
             player_name = input_provider.get_input_dialog(
-                f"What is the name of the player number #{j+1}?: \n")
+                f"""What is the name of the player number #{j+1}?: \n
+                Please don't choose the same name as the other players. \n
+                Please don't use "_" in the name. \n""")
 
             while (True):
-                if (self.no_more_player_same_name(player_name, real_players_lst)):
+                if (self.no_more_player_same_name(player_name, real_players_lst)
+                    and player_name != ""
+                    and "_" not in player_name
+                        and self.not_only_spaces(player_name)):
                     break
-                if (player_name == ""):
+                if ("_" in player_name):
+                    player_name = input_provider.get_input_dialog(
+                        f"""Please don't use "_" in the name. \n
+                        What is the name of the player number #{j+1}?: \n""")
+                if (player_name == "" or not self.not_only_spaces(player_name)):
                     player_name = input_provider.get_input_dialog(
                         f"You didn't enter a name, please choose one.\nPlease choose a name for the player number #{j+1}?: \n")
                 else:
                     player_name = input_provider.get_input_dialog(
-                        f"There's already a player with this name, please choose different one. \nWhat is the name of the player number #{j+1}?: \n")
+                        f"""There's already a player with this name, please choose different one. \n
+                        Please don't use "_" in the name. \n
+                        What is the name of the player number #{j+1}?: \n""")
 
             player_color = input_provider.get_input_in_radiolist_dialog(
                 f"Hello {player_name}, What color would you like to be?", COLORS_LIST)

@@ -30,8 +30,7 @@ def from_str_to_coordinates(str: str):  # -> tuple[int,int]:
     num2 = str[coma_index+1:len(str)-1]
     return (int(num1), int(num2))
 
-
-def read_log_file(file_name: str):
+def read_and_load_log_file(file_name: str)->GameSettings:
     with open(file_name, 'r') as f:
         lines = [line.strip() for line in f.readlines()]
     index = lines.index("")
@@ -69,8 +68,9 @@ def get_game_settings_from_log(lines: List[str], players_list: List[Player]) -> 
 
 
 #players_list = get_players_list_from_log("Trol.txt")
-game = read_log_file("Trol.txt")
-game.board.print_board()
+# game = read_and_load_log_file("ARiel.txt")
+# game.board.print_board()
+# print(game.players_list[0].name)
 
 
 # print(content[start_players+1])
