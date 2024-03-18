@@ -24,7 +24,7 @@ TRIANGLES = {
 }
 
 
-def from_str_to_coordinates(str: str):  # -> tuple[int,int]:
+def from_str_to_coordinates(str: str) -> tuple[int,int]:
     coma_index = str.find(",")
     num1 = str[1:coma_index]
     num2 = str[coma_index+1:len(str)-1]
@@ -42,14 +42,16 @@ def read_and_load_log_file(file_name: str) -> GameSettings:
         if ("These are the moves:" == lines[j]):
             lines = lines[j:]
             break
-
-    last_line_of_moves = lines.index("")
+    if "" not in lines:
+        last_line_of_moves = len(lines)
+    else:
+        last_line_of_moves=lines.index("")
     lines_for_game_settings = lines[1:last_line_of_moves]
 
     return get_game_settings_from_log(lines_for_game_settings, players_list)
 
 
-def get_players_list_from_log(lines: List[str], game_number: int = 1) -> list[Player]:
+def get_players_list_from_log(lines: List[str]) -> list[Player]:
     players_list = []
     for index in range(0, len(lines), 5):
         players_list.append(Player(lines[index],

@@ -29,7 +29,9 @@ class Board:
     """
 
     """
-
+    BOARD_LENGTH = 17
+    BOARD_WIDTH = 25
+    
     def __init__(self) -> None:
         self.the_board = self.get_empty_board()
         # self.six_corners = {Triangles.upper_tri: BoardValues.EMPTY, Triangles.lower_tri: BoardValues.EMPTY, Triangles.upper_left_tri: BoardValues.EMPTY,
@@ -204,9 +206,7 @@ class Board:
     def clear_screen(self) -> None:
         print("\033[H\033[J", end="")
 
-    def print_board(self,player: Player = None, possible_moves: List[Tuple[int, int]] = None) -> None:
-        # BACKGROUND_COLOR = '\033[103m'
-        # BACKGROUND_RESET = '\033[0m'
+    def print_board(self,player: Player = None, possible_moves: List[Tuple[int, int]] = None,current_loc:Coordinates=None) -> None:
         if (player != None):
             player_locs_list = triangles_funcs.get_all_locs_4player(
                 self.the_board, player)
@@ -215,6 +215,8 @@ class Board:
             for j in range(len(self.the_board[0])):
                 if (player != None and (i, j) in player_locs_list):
                     print(EMOJI_NUMS[player_locs_list.index((i, j))], end=" ")
+                elif(current_loc!=None and (i,j)==current_loc):
+                    print("🎯",end=" ")
                 elif(possible_moves!=None and (i,j) in possible_moves):
                     print(EMOJI_POSSIBLE_MOVES[possible_moves.index((i,j))],end=" ")
                 else:

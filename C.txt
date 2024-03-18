@@ -1,0 +1,15 @@
+2024-03-18 17:13:39 Game #1 log - These are the players:
+YULL
+BoardValues.ORANGE
+False
+Triangles.upper_tri
+Triangles.lower_tri
+Computer #1
+BoardValues.RED
+True
+Triangles.lower_tri
+Triangles.upper_tri
+
+These are the moves:
+2024-03-18 17:13:55_YULL_(3, 15)_(4, 16)
+2024-03-18 17:13:55_Computer #1_(13, 13)_(11, 13)

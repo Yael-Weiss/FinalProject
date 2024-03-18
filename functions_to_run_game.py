@@ -122,8 +122,8 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coo
             break
         print("Invalid input, let's try again.")
     game_settings.board.clear_screen()
-    game_settings.board.print_board(player,
-                                    moveValidation.get_all_possible_moves(game_settings, current_loc))
+    game_settings.board.print_board(None,
+                                    moveValidation.get_all_possible_moves(game_settings, current_loc),current_loc)
     while (True):
         go_to = player_choose_destination(game_settings, player, current_loc)
         if (moveValidation.is_valid_move(game_settings, player, current_loc, go_to)):
@@ -174,7 +174,7 @@ def play(game_settings: GameSettings) -> None:
     game_settings.score_board.add_winner(player)
     for p in game_settings.players_list:
         if p != player:
-            game_settings.score_board.add_loser(player)
+            game_settings.score_board.add_loser(p)
     Logger.add_scores_message(game_settings.score_board.get_str_scores())
     input_provider.print_message_dialog_or_quit(
         game_settings.score_board.get_str_scores()+f"\nGood job everyone, the game ended.", "Game Ended!")

@@ -1,0 +1,13 @@
+2024-03-18 17:41:29 Game #1 log - These are the players:
+ffffff
+BoardValues.RED
+False
+Triangles.upper_tri
+Triangles.lower_tri
+Computer #1
+BoardValues.BLUE
+True
+Triangles.lower_tri
+Triangles.upper_tri
+
+These are the moves:

@@ -27,7 +27,7 @@ class ScoresBoard:
                 break
         str_scores+=the_big_winner+", you won!\nThe other players scores are:\n"
         for player in self.scores_board.keys():
-            str_scores+=f"{player} won: " + str(self.scores_board[player][0])+ " times and lost: " + str(self.scores_board[player][1])
+            str_scores+=f"{player} won: " + str(self.scores_board[player][0])+ " times and lost: " + str(self.scores_board[player][1])+"\n"
         
         return str_scores
         
