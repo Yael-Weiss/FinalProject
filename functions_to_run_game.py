@@ -22,14 +22,20 @@ def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
                                                     "Do you want to load a game or to start a new one?",
                                                     "start a new game", "load a game")
     if (is_new_game):
-        game_settings.init_board()
         game_name = input_provider.get_input_dialog(
-            "Pick a name to the Turnir file: ")
+            "Pick a name to the Turnir file: ",cancel_text1="Back")
+        if(game_name==None):
+            create_new_game_settings(game_settings)
+
+        game_settings.init_board()
         Logger.create_file(game_name, game_settings.players_list)
 
     else:
         file_name = input_provider.get_input_dialog(
-            "Enter the name of the game you want to load: ")
+            "Enter the name of the game you want to load: ",cancel_text1="Back")
+        if(file_name==None):
+            create_new_game_settings(game_settings)
+
         Logger.name = file_name
         game_settings = read_logger.read_and_load_log_file(
             file_name+".txt")

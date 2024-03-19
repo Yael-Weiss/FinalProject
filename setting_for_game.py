@@ -7,8 +7,8 @@ from logger import Logger
 from player import Player
 from scores_board import ScoresBoard
 from triangles import Triangles
-import triangles_funcs
 import input_provider
+
 
 TRIANGLES_DICT = {2: [Triangles.upper_tri, Triangles.lower_tri],
                   3: [Triangles.upper_tri, Triangles.lower_left_tri, Triangles.lower_right_tri],
@@ -40,7 +40,6 @@ class GameSettings:
         self.board.fill_beginning_triangles(self.players_list)
         self.score_board.init_players(self.players_list)
        
-
     def no_more_player_same_name(self, name: str, players_list: List[Player]) -> bool:
         if (name == ""):
             return False
@@ -83,7 +82,9 @@ class GameSettings:
                                                                             \nThe game fits for 2-6 players. 
                                                                            \nHow many computer players would you like in the game? 
                                                                            \n(In the next window you will enter the details of the real players)""",
-                                                                           possible_num_of_players)
+                                                                           possible_num_of_players,"too late, you must choose a number")
+        if(num_of_comp_players==None):
+            self.get_num_of_players_and_comps()
 
         possible_num_of_real_players = []
         start = 1
@@ -156,9 +157,4 @@ class GameSettings:
 
 
 if __name__ == "__main__":
-    # happens in main
-    GameSettings.set_name("file.name")
-
-    # happens in single turn
-    GameSettings.say_hello()
     pass

@@ -4,7 +4,6 @@ from BoardValues import BoardValues
 from player import Player
 from triangles import Triangles
 import triangles_funcs
-import unittest
 
 
 Coordinates = Tuple[int, int]
@@ -19,19 +18,20 @@ EMOJY_DICT = {
     BoardValues.ORANGE: "🟠"
 }
 EMOJI_NUMS = ["1️⃣ ", "2️⃣ ", "3️⃣ ", "4️⃣ ", "5️⃣ ",
-              "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟"]
-EMOJI_POSSIBLE_MOVES=["😽","🐶","🦊","🐒","🐺","🐱","🐷","🐮","🦝","🐯","🐗",
-                     "🐭","🐹","🐰","🐻","🫎","🐨","🐼","🐸","🦧","🐔","🐕","🐩",
-                     "🦛","🦥","🦖","🐬","🦭","🐓","💩","🐖","🦐","🦑","🦆","🦀","🦞"]
+              "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟","11","12","13","14","15"]
+EMOJI_POSSIBLE_MOVES = ["😽" ,"🐶 "," 🦊"," 🐒", "🐺" ,"🐱 "," 🐷"," 🐮", "🦝","🐯","🐗",
+                        "🐭" ,"🐹 "," 🐰"," 🐻", "🫎" ,"🐨 "," 🐼"," 🐸", "🦧" ,"🐔","🐕","🐩",
+                        "🦛" ,"🦥 "," 🦖"," 🐬", "🦭" ,"🐓 "," 💩"," 🐖", "🦐" ,"🦑 ","🦆","🦀","🦞"]
 
 
 class Board:
     """
 
     """
-    BOARD_LENGTH = 17
-    BOARD_WIDTH = 25
-    
+    TRIANGLE_LENGTH = 4
+    BOARD_LENGTH = TRIANGLE_LENGTH*4+1
+    BOARD_WIDTH = TRIANGLE_LENGTH*6+1
+
     def __init__(self) -> None:
         self.the_board = self.get_empty_board()
         # self.six_corners = {Triangles.upper_tri: BoardValues.EMPTY, Triangles.lower_tri: BoardValues.EMPTY, Triangles.upper_left_tri: BoardValues.EMPTY,
@@ -41,8 +41,8 @@ class Board:
         lst = []
         temp_lst = []
         empty_places = 1
-        out_of_board = 12
-        while (empty_places != 5):
+        out_of_board = self.BOARD_WIDTH//2
+        while (empty_places != self.TRIANGLE_LENGTH+1):
             for i in range(out_of_board):
                 temp_lst.append(BoardValues.OUT_OF_BOARD)
             for j in range(empty_places):
@@ -58,9 +58,9 @@ class Board:
             lst.append(temp_lst)
             temp_lst = []
 
-        empty_places = 13
+        empty_places = self.BOARD_WIDTH//2+1
         out_of_board = 0
-        while (out_of_board != 5):
+        while (out_of_board != self.TRIANGLE_LENGTH+1):
 
             for i in range(0, out_of_board):
                 temp_lst.append(BoardValues.OUT_OF_BOARD)
@@ -79,8 +79,8 @@ class Board:
             lst.append(temp_lst)
             temp_lst = []
 
-        empty_places = 10
-        out_of_board = 3
+        empty_places = self.TRIANGLE_LENGTH*2+2
+        out_of_board = self.TRIANGLE_LENGTH-1
         while (out_of_board != -1):
             for i in range(out_of_board):
                 temp_lst.append(BoardValues.OUT_OF_BOARD)
@@ -97,8 +97,8 @@ class Board:
             lst.append(temp_lst)
             temp_lst = []
 
-        empty_places = 4
-        out_of_board = 9
+        empty_places = self.TRIANGLE_LENGTH
+        out_of_board = (self.TRIANGLE_LENGTH*2)+1
         while (empty_places != 0):
             for i in range(out_of_board):
                 temp_lst.append(BoardValues.OUT_OF_BOARD)
@@ -117,72 +117,71 @@ class Board:
         return lst
 
     def fill_upper_triangle(self, player_color: BoardValues) -> None:
-        start = 12
-        for i in range(1, 5):
+        start = self.BOARD_WIDTH//2
+        for i in range(1, 1+self.TRIANGLE_LENGTH):
             for j in range(i):
                 self.the_board[i-1][start+2*j] = player_color
             start -= 1
-        # self.six_corners[Triangles.upper_tri] = player_color
 
     def fill_lower_triangle(self, player_color: BoardValues) -> None:
-        start_col = 9
-        places_to_fill = 4
-        start_row = 13
-        while (start_col != 13):
+        start_col = (2*self.TRIANGLE_LENGTH)+1
+        places_to_fill = self.TRIANGLE_LENGTH
+        start_row = self.BOARD_LENGTH-self.TRIANGLE_LENGTH
+        stop_while = (start_col+self.TRIANGLE_LENGTH)
+        while (start_col != stop_while):
             for i in range(places_to_fill):
                 self.the_board[start_row][start_col+2*i] = player_color
             start_col += 1
             start_row += 1
             places_to_fill -= 1
-        # self.six_corners[Triangles.lower_tri] = player_color
-
+            
     def fill_upper_left_triangle(self, player_color: BoardValues) -> None:
         start_col = 0
-        places_to_fill = 4
-        start_row = 4
-        while (start_row != 9):
+        places_to_fill = self.TRIANGLE_LENGTH
+        start_row = self.TRIANGLE_LENGTH
+        stop_while = ((start_row+self.TRIANGLE_LENGTH)+1)
+        while (start_row != stop_while):
             for i in range(places_to_fill):
                 self.the_board[start_row][start_col+2*i] = player_color
             start_col += 1
             start_row += 1
             places_to_fill -= 1
-        # self.six_corners[Triangles.upper_left_tri] = player_color
 
     def fill_lower_left_triangle(self, player_color: BoardValues) -> None:
-        start_col = 3
+        start_col = self.TRIANGLE_LENGTH-1
         places_to_fill = 1
-        start_row = 9
-        while (start_row != 13):
+        start_row = (self.TRIANGLE_LENGTH*2+1)
+        stop_while = start_row+self.TRIANGLE_LENGTH
+        while (start_row != stop_while):
             for i in range(places_to_fill):
                 self.the_board[start_row][start_col+2*i] = player_color
             start_col -= 1
             start_row += 1
             places_to_fill += 1
-        # self.six_corners[Triangles.lower_left_tri] = player_color
 
     def fill_upper_right_triangle(self, player_color: BoardValues) -> None:
-        start_col = 18
-        places_to_fill = 4
-        start_row = 4
-        while (start_row != 9):
+        start_col = (self.TRIANGLE_LENGTH*4)+2
+        places_to_fill = self.TRIANGLE_LENGTH
+        start_row = self.TRIANGLE_LENGTH
+        stop_while=(self.TRIANGLE_LENGTH*2+1)
+        while (start_row != stop_while):
             for i in range(places_to_fill):
                 self.the_board[start_row][start_col+2*i] = player_color
             start_col += 1
             start_row += 1
             places_to_fill -= 1
-        # self.six_corners[Triangles.upper_right_tri] = player_color
 
     def fill_lower_right_triangle(self, player_color: BoardValues) -> None:
-        start_col = 21
+        start_col = ((self.TRIANGLE_LENGTH*4)+2+(self.TRIANGLE_LENGTH-1))
         places_to_fill = 1
-        start_row = 9
-        while (start_row != 13):
+        start_row = (self.TRIANGLE_LENGTH*2+1)
+        stop_while=start_row+self.TRIANGLE_LENGTH
+        while (start_row != stop_while):
             for i in range(places_to_fill):
                 self.the_board[start_row][start_col+2*i] = player_color
             start_col -= 1
             start_row += 1
             places_to_fill += 1
-        # self.six_corners[Triangles.lower_right_tri] = player_color
 
     def fill_beginning_triangles(self, players_list: List[Player]) -> None:
         # to think about dicts
@@ -206,19 +205,20 @@ class Board:
     def clear_screen(self) -> None:
         print("\033[H\033[J", end="")
 
-    def print_board(self,player: Player = None, possible_moves: List[Tuple[int, int]] = None,current_loc:Coordinates=None) -> None:
+    def print_board(self, player: Player = None, possible_moves: List[Tuple[int, int]] = None, current_loc: Coordinates = None) -> None:
         if (player != None):
             player_locs_list = triangles_funcs.get_all_locs_4player(
                 self.the_board, player)
-            
+
         for i in range(len(self.the_board)):
             for j in range(len(self.the_board[0])):
                 if (player != None and (i, j) in player_locs_list):
                     print(EMOJI_NUMS[player_locs_list.index((i, j))], end=" ")
-                elif(current_loc!=None and (i,j)==current_loc):
+                elif (current_loc != None and (i, j) == current_loc):
                     print("🎯",end=" ")
-                elif(possible_moves!=None and (i,j) in possible_moves):
-                    print(EMOJI_POSSIBLE_MOVES[possible_moves.index((i,j))],end=" ")
+                elif (possible_moves != None and (i, j) in possible_moves):
+                    print(
+                        EMOJI_POSSIBLE_MOVES[possible_moves.index((i, j))], end=" ")
                 else:
                     print(self.match_cell_to_emojy(
                         self.the_board[i][j]), end=" ")
@@ -234,9 +234,4 @@ class Board:
             return True
         return False
 
-    # def is_winner(self, player: Player, current_loc: Coordinates, go_to: Coordinates) -> bool:
-    #     if (self.move_player(player, current_loc, go_to)):
-    #         all_same_and_tri_name=self.is_in_triangle(player, go_to)
-    #         if(all_same_and_tri_name[0] and self.six_corners[all_same_and_tri_name[1]]!=player.color):
-    #             return True
-    #     return False
+

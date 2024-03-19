@@ -20,7 +20,7 @@ class ScoresBoard:
         
     def get_str_scores(self)->None:
         str_scores=""
-        highest_wins = max(self.scores_board.values(), key=lambda x: x[1])
+        highest_wins = max(self.scores_board.values(), key=lambda x: x[0])
         for key, value in self.scores_board.items():
             if value == highest_wins:
                 the_big_winner = key

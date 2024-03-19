@@ -1,10 +1,9 @@
 from typing import List, Tuple
-from board import Board
 from BoardValues import BoardValues
 from player import Player
 from setting_for_game import GameSettings
 from triangles import Triangles
-import triangles_funcs
+import checking_tri
 
 Coordinates = Tuple[int, int]
 TRIANGLES_LIST = [Triangles.upper_tri,
@@ -13,24 +12,15 @@ TRIANGLES_LIST = [Triangles.upper_tri,
                   Triangles.lower_right_tri,
                   Triangles.lower_left_tri,
                   Triangles.upper_right_tri]
-TRIANGLES_CHECK = {Triangles.upper_tri: triangles_funcs.is_loc_in_upper_tri,
-                   Triangles.upper_left_tri: triangles_funcs.is_loc_in_upper_left_tri,
-                   Triangles.lower_tri: triangles_funcs.is_loc_in_lower_tri,
-                   Triangles.lower_right_tri: triangles_funcs.is_loc_in_lower_right_tri,
-                   Triangles.lower_left_tri: triangles_funcs.is_loc_in_lower_left_tri,
-                   Triangles.upper_right_tri: triangles_funcs.is_loc_in_upper_right_tri}
+TRIANGLES_CHECK = {Triangles.upper_tri: checking_tri.is_loc_in_upper_tri,
+                   Triangles.upper_left_tri: checking_tri.is_loc_in_upper_left_tri,
+                   Triangles.lower_tri: checking_tri.is_loc_in_lower_tri,
+                   Triangles.lower_right_tri: checking_tri.is_loc_in_lower_right_tri,
+                   Triangles.lower_left_tri: checking_tri.is_loc_in_lower_left_tri,
+                   Triangles.upper_right_tri: checking_tri.is_loc_in_upper_right_tri}
 DIRECTIONS_LIST = [(-2, -2), (-2, 2), (2, -2), (2, 2), (2, 0), (-2, 0)]
 
-# class MoveValidation:
-#     def __init__(self, game_setting: GameSettings) -> None:
-#         self.game_setting = game_setting
-
-# def get_players_destinations(self,board:Board,players_list:List[[Player]])->dict[List[[Player]],Triangles]:
-
-
 def get_list_of_possible_moves(game_settings: GameSettings, current_loc: Coordinates) -> List[Tuple[int, int]]:
-    # to add jumps
-
     if not (game_settings.board.is_on_board(current_loc)):
         return []
 
@@ -62,7 +52,6 @@ def get_list_of_possible_moves(game_settings: GameSettings, current_loc: Coordin
 
     return lst
 
-
 def get_set_of_possible_jumps(game_settings: GameSettings, current_location: Coordinates, possible_jumps_set: set[Coordinates], directions_list: List[Coordinates] = DIRECTIONS_LIST) -> set[Coordinates]:
     row, col = current_location
     for direction in directions_list:
@@ -76,13 +65,11 @@ def get_set_of_possible_jumps(game_settings: GameSettings, current_location: Coo
                         game_settings, jump_to, possible_jumps_set)
     return possible_jumps_set
 
-
 def from_current_loc_to_player(game_settings: GameSettings, current_loc: Coordinates) -> Player:
     for player in game_settings.players_list:
         if (game_settings.board.cell_content(current_loc) == player.color):
             return player
     return None
-
 
 def get_all_possible_moves(game_settings: GameSettings, current_loc: Coordinates) -> List[Tuple[int, int]]:
     possible_moves = get_list_of_possible_moves(game_settings, current_loc)
@@ -91,32 +78,27 @@ def get_all_possible_moves(game_settings: GameSettings, current_loc: Coordinates
     possible_moves.extend(list(possible_jumps))
     player = from_current_loc_to_player(game_settings, current_loc)
     for move in possible_moves:
-        if (is_in_triangle_not_des_not_start(player, move)):
+        if (is_in_triangle_not_des_not_start(game_settings,player, move)):
             possible_moves.remove(move)
     return possible_moves
 
+# def is_in_destination(player: Player, loc: Coordinates) -> bool:
+#     return TRIANGLES_CHECK[player.destination_tri](loc)
 
-def is_in_destination(player: Player, loc: Coordinates) -> bool:
-    return TRIANGLES_CHECK[player.destination_tri](loc)
-
-
-def is_in_triangle_not_des_not_start(player: Player, loc: Coordinates) -> bool:
+def is_in_triangle_not_des_not_start(game_settings:GameSettings,player: Player, loc: Coordinates) -> bool:
     for tri in TRIANGLES_CHECK.keys():
         if (player.destination_tri != tri and player.starting_tri != tri):
-            if (TRIANGLES_CHECK[tri](loc)):
+            if (TRIANGLES_CHECK[tri](game_settings.board,loc)):
                 return True
     return False
-
 
 def is_valid_current_loc(game_settings: GameSettings, player: Player, current_loc: Coordinates) -> bool:
     return game_settings.board.cell_content(current_loc) == player.color and get_all_possible_moves(game_settings, current_loc) != []
 
-
 def is_valid_move(game_settings: GameSettings, player: Player, loc: Coordinates, go_to: Coordinates) -> bool:
-    if (not is_in_triangle_not_des_not_start(player, go_to)) and player.color == game_settings.board.cell_content(loc) and (go_to in get_all_possible_moves(game_settings, loc)):
+    if (not is_in_triangle_not_des_not_start(game_settings,player, go_to)) and player.color == game_settings.board.cell_content(loc) and (go_to in get_all_possible_moves(game_settings, loc)):
         return True
     return False
-
 
 def move_player(game_settings: GameSettings, player: Player, loc: Coordinates, go_to: Coordinates) -> bool:
     if (is_valid_move(game_settings, player, loc, go_to)):
@@ -127,10 +109,5 @@ def move_player(game_settings: GameSettings, player: Player, loc: Coordinates, g
 
 
 if __name__ == "__main__":
-    game_settings = GameSettings()
-    # lst=get_list_of_possible_moves(game_settings,(3,9))
-    # lst.extend(list(get_set_of_possible_jumps(game_settings,(3,9),set({}))))
-    # print(lst)
-    print(get_all_possible_moves(game_settings, (3, 9)))
-    # print(get_set_of_possible_jumps())
+    pass
     

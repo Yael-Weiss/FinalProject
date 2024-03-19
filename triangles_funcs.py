@@ -6,10 +6,11 @@ from BoardValues import BoardValues
 from player import Player
 
 
+
 Coordinates = Tuple[int, int]
 
 # NUM_ROWS_IN_TRIANGLE = 4
-# MIDDLE_OF_ROW = 12
+# MIDDLE_12OF_ROW = 
 
 def get_all_locs_4player(board:List[List[BoardValues]],player:Player)->List[Coordinates]:
     lst=[]
@@ -19,83 +20,7 @@ def get_all_locs_4player(board:List[List[BoardValues]],player:Player)->List[Coor
                 lst.append((i,j))
     return lst
 
-def is_loc_in_upper_tri(loc: Coordinates) -> bool:
-    # if (loc[0] in range(NUM_ROWS_IN_TRIANGLE) and loc[1] in range(MIDDLE_OF_ROW - loc[0], MIDDLE_OF_ROW + 2*loc[0], 2)):
-    #     return True
 
-    # return False
-    start=12
-    for i in range(1, 5):
-        for j in range(i):
-            if ((i-1) == loc[0] and (start+2*j) == loc[1]):
-                return True
-        start -= 1
-    return False
-
-def is_loc_in_upper_left_tri(loc: Coordinates) -> bool:
-    start_col = 0
-    places_to_fill = 4
-    start_row = 4
-    while (start_row != 9):
-        for i in range(places_to_fill):
-            if (start_row == loc[0] and (start_col+2*i) == loc[1]):
-                return True
-        start_col += 1
-        start_row += 1
-        places_to_fill -= 1
-    return False
-
-def is_loc_in_lower_left_tri(loc: Coordinates) -> bool:
-    start_col = 3
-    places_to_fill = 1
-    start_row = 9
-    while (start_row != 13):
-        for i in range(places_to_fill):
-            if (start_row == loc[0] and (start_col+2*i) == loc[1]):
-                return True
-        start_col -= 1
-        start_row += 1
-        places_to_fill += 1
-    return False
-
-def is_loc_in_upper_right_tri(loc: Coordinates) -> bool:
-    start_col = 18
-    places_to_fill = 4
-    start_row = 4
-    while (start_row != 9):
-        for i in range(places_to_fill):
-            if (start_row == loc[0] and (start_col+2*i) == loc[1]):
-                return True
-        start_col += 1
-        start_row += 1
-        places_to_fill -= 1
-    return False
-
-def is_loc_in_lower_right_tri(loc: Coordinates) -> bool:
-    start_col = 21
-    places_to_fill = 1
-    start_row = 9
-    while (start_row != 13):
-        for i in range(places_to_fill):
-            if (start_row == loc[0] and (start_col+2*i) == loc[1]):
-                return True
-        start_col -= 1
-        start_row += 1
-        places_to_fill += 1
-    return False
-
-def is_loc_in_lower_tri(loc: Coordinates) -> bool:
-    start_col = 9
-    places_to_fill = 4
-    start_row = 13
-    while (start_col != 13):
-        for i in range(places_to_fill):
-            if (start_row == loc[0] and (start_col+2*i) == loc[1]):
-                return True
-        start_col += 1
-        start_row += 1
-        places_to_fill -= 1
-    return False
 
 
 
