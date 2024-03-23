@@ -1,5 +1,5 @@
 from typing import Tuple, Union
-from board import EMOJI_NUMS, EMOJI_POSSIBLE_MOVES, Board
+from board import EMOJI_POSSIBLE_MOVES, Board
 from logger import Logger
 from player import Player
 from setting_for_game import GameSettings
@@ -36,7 +36,7 @@ def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
         if(file_name==None):
             create_new_game_settings(game_settings)
 
-        Logger.name = file_name
+        Logger.name = file_name+".txt"
         game_settings = read_logger.read_and_load_log_file(
             file_name+".txt")
     return game_settings
@@ -52,7 +52,7 @@ def is_winner(game_settings: GameSettings, player: Player):
 def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> Coordinates:
     player_locs_list = triangles_funcs.get_all_locs_4player(
         game_settings.board.the_board, player)
-    emojy_nums = EMOJI_NUMS
+    emojy_nums = game_settings.board.EMOJI_NUMS
     while (True):
         while (True):
             emojy = input_provider.get_input_with_autocomplete(
@@ -167,7 +167,6 @@ def play(game_settings: GameSettings) -> None:
     The emojies represent the places that the player can move the piece to.\n
     Enjoy and Good luck!"""
     input_provider.print_message_dialog_or_quit(introduction, "Lets go!")
-    game_settings.board.print_board()
 
     input_provider.print_message_dialog_or_quit(
         f"{game_settings.players_list[0].name}, you go first!", "lets go!")

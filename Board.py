@@ -17,8 +17,8 @@ EMOJY_DICT = {
     BoardValues.GREEN: "🟢",
     BoardValues.ORANGE: "🟠"
 }
-EMOJI_NUMS = ["1️⃣ ", "2️⃣ ", "3️⃣ ", "4️⃣ ", "5️⃣ ",
-              "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27"]
+# EMOJI_NUMS = ["1️⃣ ", "2️⃣ ", "3️⃣ ", "4️⃣ ", "5️⃣ ",
+            #   "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27"]
 EMOJI_POSSIBLE_MOVES = ["😽" ,"🐶 "," 🦊"," 🐒", "🐺" ,"🐱 "," 🐷"," 🐮", "🦝","🐯","🐗",
                         "🐭" ,"🐹 "," 🐰"," 🐻", "🫎" ,"🐨 "," 🐼"," 🐸", "🦧" ,"🐔","🐕","🐩",
                         "🦛" ,"🦥 "," 🦖"," 🐬", "🦭" ,"🐓 "," 💩"," 🐖", "🦐" ,"🦑 ","🦆","🦀","🦞"]
@@ -32,9 +32,16 @@ class Board:
 
     def __init__(self,triangle_length:int=4) -> None:
         self.TRIANGLE_LENGTH = triangle_length
+        self.EMOJI_NUMS=self.get_emoji_nums(self.TRIANGLE_LENGTH)
         self.BOARD_LENGTH = self.TRIANGLE_LENGTH*4+1
         self.BOARD_WIDTH = self.TRIANGLE_LENGTH*6+1
         self.the_board = self.get_empty_board()
+
+    def get_emoji_nums(self,trianlge_length:int=4)->List[str]:
+        lst=[i for i in range(1,sum(range(trianlge_length+1))+1)]
+        lst=[str(num) for num in lst]
+        return lst
+
 
     def get_empty_board(self) -> List[List[BoardValues]]:
         lst = []
@@ -215,7 +222,10 @@ class Board:
         for i in range(len(self.the_board)):
             for j in range(len(self.the_board[0])):
                 if (player != None and (i, j) in player_locs_list):
-                    print(EMOJI_NUMS[player_locs_list.index((i, j))], end=" ")
+                    if(player_locs_list.index((i, j))<10):
+                        print(" "+self.EMOJI_NUMS[player_locs_list.index((i, j))], end=" ")
+                    else:
+                        print(self.EMOJI_NUMS[player_locs_list.index((i, j))], end=" ")
                 elif (current_loc != None and (i, j) == current_loc):
                     print("🎯",end=" ")
                 elif (possible_moves != None and (i, j) in possible_moves):
