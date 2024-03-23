@@ -1,5 +1,6 @@
 from typing import List
 from BoardValues import BoardValues
+from board import Board
 from logger import Logger
 from player import Player
 from setting_for_game import GameSettings
@@ -37,7 +38,8 @@ def read_and_load_log_file(file_name: str) -> GameSettings:
     last_line_of_players = lines.index("")
     lines_for_players_list = lines[1:last_line_of_players]
     players_list = get_players_list_from_log(lines_for_players_list)
-
+    triangle_length_line=lines[last_line_of_players+1].split(":")
+    triangle_length = int(triangle_length_line[1])
     for j in range(len(lines)-1, -1, -1):
         if ("These are the moves:" == lines[j]):
             lines = lines[j:]
@@ -48,7 +50,7 @@ def read_and_load_log_file(file_name: str) -> GameSettings:
         last_line_of_moves=lines.index("")
     lines_for_game_settings = lines[1:last_line_of_moves]
 
-    return get_game_settings_from_log(lines_for_game_settings, players_list)
+    return get_game_settings_from_log(lines_for_game_settings, players_list,triangle_length)
 
 
 def get_players_list_from_log(lines: List[str]) -> list[Player]:
@@ -61,10 +63,10 @@ def get_players_list_from_log(lines: List[str]) -> list[Player]:
     return players_list
 
 
-def get_game_settings_from_log(lines: List[str], players_list: List[Player], game_number: int = 1) -> GameSettings:
+def get_game_settings_from_log(lines: List[str], players_list: List[Player],triangle_length:int=4) -> GameSettings:
     game_settings = GameSettings()
     game_settings.players_list = players_list
-    game_settings.init_only_board()
+    game_settings.init_only_board(triangle_length)
     for line in lines:
         splited_line = line.split("_")
         for i in range(len(players_list)):
@@ -74,15 +76,8 @@ def get_game_settings_from_log(lines: List[str], players_list: List[Player], gam
         go_to = from_str_to_coordinates(splited_line[3])
         moveValidation.move_player(
             game_settings, player_to_move, current_loc, go_to)
-    game_settings.score_board.init_players(game_settings.players_list)
+    game_settings.score_board.init_players_scores(game_settings.players_list)
     return game_settings
 
 
-# players_list = get_players_list_from_log("Trol.txt")
-# game = read_and_load_log_file("ARiel.txt")
-# game.board.print_board()
-# print(game.players_list[0].name)
 
-
-# print(content[start_players+1])
-# get_game_settings_from_log("Trol.txt")

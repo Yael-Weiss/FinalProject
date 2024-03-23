@@ -28,17 +28,20 @@ POSSIBLE_NUM_OF_PLAYERS = 6
 
 class GameSettings:
     def __init__(self) -> None:
-        self.board = Board()
+        self.board = None
         self.players_list = []
         self.score_board = ScoresBoard()
 
-    def init_only_board(self) -> None:
+    def init_only_board(self,triangle_length:int=4) -> None:
+        self.board=Board(triangle_length)
         self.board.fill_beginning_triangles(self.players_list)
 
     def init_board(self) -> None:
         self.players_list = self.get_all_players_list()
+        self.board=Board(int(self.get_tri_size()))
+        self.board.the_board = self.board.get_empty_board()
         self.board.fill_beginning_triangles(self.players_list)
-        self.score_board.init_players(self.players_list)
+        self.score_board.init_players_scores(self.players_list)
        
     def no_more_player_same_name(self, name: str, players_list: List[Player]) -> bool:
         if (name == ""):
@@ -110,6 +113,19 @@ class GameSettings:
                 return True
         return False
 
+    def get_tri_size(self):
+        tri_size=input_provider.get_input_dialog("""What size you want the board? 
+                                        \nIt is recommended to choose a number between 2-10. 
+                                        \nYou can choose a bigger one if you have a big screen.""")
+        while True:
+            if(tri_size.isdigit() and 1<int(tri_size)):
+                break
+            tri_size=input_provider.get_input_dialog("""Invalid input, try again. 
+                                                     \nWhat size you want the board? 
+                                        \nIt is recommended to choose a number between 2-10. 
+                                        \nYou can choose a bigger one if you have a big screen.""")
+        return tri_size
+    
     def get_real_players_list(self, num_of_real_players: int, total_num_players: int) -> List[Player]:
         real_players_lst = []
         COLORS_LIST = self.get_colors_list()
@@ -140,7 +156,7 @@ class GameSettings:
 
             player_color = input_provider.get_input_in_radiolist_dialog(
                 f"Hello {player_name}, What color would you like to be?", COLORS_LIST)
-            # print(f"name:{player_name}, color:{player_color}")
+            
             player = Player(player_name, player_color,
                             TRIANGLES_DICT[total_num_players][j])
             real_players_lst.append(player)

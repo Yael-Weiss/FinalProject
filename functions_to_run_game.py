@@ -28,7 +28,7 @@ def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
             create_new_game_settings(game_settings)
 
         game_settings.init_board()
-        Logger.create_file(game_name, game_settings.players_list)
+        Logger.create_file(game_name, game_settings.players_list,game_settings.board.TRIANGLE_LENGTH)
 
     else:
         file_name = input_provider.get_input_dialog(
@@ -184,7 +184,6 @@ def play(game_settings: GameSettings) -> None:
     Logger.add_scores_message(game_settings.score_board.get_str_scores())
     input_provider.print_message_dialog_or_quit(
         game_settings.score_board.get_str_scores()+f"\nGood job everyone, the game ended.", "Game Ended!")
-    # game_settings.score_board.()
     game_settings.board.print_board()
 
 

@@ -18,7 +18,7 @@ EMOJY_DICT = {
     BoardValues.ORANGE: "🟠"
 }
 EMOJI_NUMS = ["1️⃣ ", "2️⃣ ", "3️⃣ ", "4️⃣ ", "5️⃣ ",
-              "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟","11","12","13","14","15"]
+              "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27"]
 EMOJI_POSSIBLE_MOVES = ["😽" ,"🐶 "," 🦊"," 🐒", "🐺" ,"🐱 "," 🐷"," 🐮", "🦝","🐯","🐗",
                         "🐭" ,"🐹 "," 🐰"," 🐻", "🫎" ,"🐨 "," 🐼"," 🐸", "🦧" ,"🐔","🐕","🐩",
                         "🦛" ,"🦥 "," 🦖"," 🐬", "🦭" ,"🐓 "," 💩"," 🐖", "🦐" ,"🦑 ","🦆","🦀","🦞"]
@@ -28,14 +28,13 @@ class Board:
     """
 
     """
-    TRIANGLE_LENGTH = 4
-    BOARD_LENGTH = TRIANGLE_LENGTH*4+1
-    BOARD_WIDTH = TRIANGLE_LENGTH*6+1
+  
 
-    def __init__(self) -> None:
+    def __init__(self,triangle_length:int=4) -> None:
+        self.TRIANGLE_LENGTH = triangle_length
+        self.BOARD_LENGTH = self.TRIANGLE_LENGTH*4+1
+        self.BOARD_WIDTH = self.TRIANGLE_LENGTH*6+1
         self.the_board = self.get_empty_board()
-        # self.six_corners = {Triangles.upper_tri: BoardValues.EMPTY, Triangles.lower_tri: BoardValues.EMPTY, Triangles.upper_left_tri: BoardValues.EMPTY,
-        #                     Triangles.lower_left_tri: BoardValues.EMPTY, Triangles.upper_right_tri: BoardValues.EMPTY}
 
     def get_empty_board(self) -> List[List[BoardValues]]:
         lst = []
@@ -198,6 +197,9 @@ class Board:
                 self.fill_lower_triangle(player.color)
             if (player.starting_tri == Triangles.lower_left_tri):
                 self.fill_lower_left_triangle(player.color)
+
+    def set_triangle_length(self,tri_length:int):
+        self.TRIANGLE_LENGTH=tri_length
 
     def match_cell_to_emojy(self, player_color: BoardValues):
         return EMOJY_DICT[player_color]

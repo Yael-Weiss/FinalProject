@@ -51,7 +51,7 @@ def get_input_dialog(question:str,cancel_text1:str="Cancel",title_on_top:str='We
 
 def print_message_dialog_or_quit(message:str,clicker_message:str)->None:
     
-    message_dialog(
+    return message_dialog(
         title=HTML('<style fg="ansired">Chinese</style> '    
                 '<style fg="ansired">Checkers Game</style>'),
         text=message,
@@ -63,13 +63,15 @@ def get_input_in_radiolist_dialog(question:str, answers_options:List[Tuple[any,s
                               values=answers_options,cancel_text=cancel_text,
                               style=MY_STYLE).run()
     return result
+
 def make_yes_no_dialog(title_on_top:str,question:str,yes_buttom:str="Yes",no_buttom:str="No")->bool:
     return yes_no_dialog(
         title=title_on_top,
         text=question,yes_text=yes_buttom,no_text=no_buttom,style=MY_STYLE).run()
+
 def cancel_handler():
-    print("User canceled the dialog.")
-    # Add any additional actions you want to perform when the dialog is canceled.
+    return make_yes_no_dialog("Chinese Checkers Game","You quited the game. \nDo you want to play again?")
+
 
 
 if __name__ == "__main__":
@@ -91,6 +93,7 @@ if __name__ == "__main__":
     # print(make_yes_no_dialog("title","question?"))
     # input_dialog("Hello","what is your name?",ok_text="Y",cancel_text="GO Back",cancel_handler=print(4)).run()
     # Display the input dialog
+    
     
     
     

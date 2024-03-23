@@ -8,7 +8,7 @@ class ScoresBoard:
     """
     def __init__(self) -> None:
         self.scores_board={}
-    def init_players(self,players_list:List[Player])->None:
+    def init_players_scores(self,players_list:List[Player])->None:
         for player in players_list:
             self.scores_board[player.name]=[0,0]
 

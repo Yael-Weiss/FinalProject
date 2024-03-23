@@ -88,5 +88,3 @@ def is_loc_in_lower_tri(board:Board,loc: Coordinates) -> bool:
         places_to_fill -= 1
     return False
 
-board=Board()
-print(is_loc_in_lower_tri(board,(15,12)))
