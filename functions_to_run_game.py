@@ -13,7 +13,7 @@ import read_logger
 
 Coordinates = Tuple[int, int]
 
-def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
+def create_new_game_settings(game_settings: GameSettings) -> Tuple[GameSettings,bool]:
     is_new_game = input_provider.make_yes_no_dialog("Welcome to Chinese Checkers Game!",
                                                     "Do you want to load a game or to start a new one?",
                                                     "start a new game", "load a game")
@@ -24,6 +24,7 @@ def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
             create_new_game_settings(game_settings)
 
         game_settings.init_board()
+        another_game=True
         Logger.create_file(game_name, game_settings.players_list,game_settings.board.TRIANGLE_LENGTH)
 
     else:
@@ -33,9 +34,9 @@ def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
             create_new_game_settings(game_settings)
         if(file_name[-4:]!=".txt"):
             Logger.name = file_name+".txt"
-        game_settings = read_logger.read_and_load_log_file(
+        game_settings,another_game = read_logger.read_and_load_log_file(
             file_name+".txt")
-    return game_settings
+    return (game_settings,another_game)
 
 
 def is_winner(game_settings: GameSettings, player: Player):

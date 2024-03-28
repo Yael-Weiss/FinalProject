@@ -64,7 +64,7 @@ class GameSettings:
         comp_players = []
         colors_list = self.get_remaining_colors(real_players_list)
         for i in range(num_of_comp_players):
-            player_name = f"Computer #{i+1}"
+            player_name = f"Computer#{i+1}"
             player_color = colors_list[i]
             player = Player(player_name, player_color, TRIANGLES_DICT[total_num_of_players][len(
                 real_players_list)+i], True)
@@ -87,7 +87,7 @@ class GameSettings:
                                                                            \n(In the next window you will enter the details of the real players)""",
                                                                            possible_num_of_players,"too late, you must choose a number")
         if(num_of_comp_players==None):
-            
+
             self.get_num_of_players_and_comps()
 
         possible_num_of_real_players = []

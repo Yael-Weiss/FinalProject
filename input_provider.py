@@ -91,7 +91,7 @@ if __name__ == "__main__":
     # print(get_input_with_autocomplete("what is your name?",["🫎","🐕","🐼"]))
     #message_dialog("ggg","the winner is...! \nGood job everyone, the game ended")
     # print(make_yes_no_dialog("title","question?"))
-    # input_dialog("Hello","what is your name?",ok_text="Y",cancel_text="GO Back",cancel_handler=print(4)).run()
+    # get_input_dialog("what is your name?").run()
     # Display the input dialog
     
     
