@@ -8,23 +8,23 @@ import moveValidation
 Coordinates = Tuple[int, int]
 
 
-def is_p1_win_in_upper_tri(game_settings: GameSettings, p1: Player) -> bool:
+def is_p1_win_in_upper_tri(game_settings: GameSettings, player: Player) -> bool:
     """
-    Check if player 1 wins in the upper triangle.
+    Check if the player wins in the upper triangle.
 
     Args:
         game_settings (GameSettings): The settings for the game.
-        p1 (Player): Player 1.
+        player (Player): Player.
 
     Returns:
-        bool: True if player 1 wins in the upper triangle, False otherwise.
+        bool: True if player wins in the upper triangle, False otherwise.
     """
     start = game_settings.board.board_width//2
     for i in range(1, 1+game_settings.board.triangle_length):
         for j in range(i):
             if (game_settings.board.cell_content((i-1, start+2*j)) == BoardValues.EMPTY):
                 return False
-            if(game_settings.board.cell_content((i-1, start+2*j)) != p1.color
+            if(game_settings.board.cell_content((i-1, start+2*j)) != player.color
                     and moveValidation.get_all_possible_moves(game_settings, (i-1, start+2*j)) != []):
                 return False
         start -= 1
@@ -32,14 +32,14 @@ def is_p1_win_in_upper_tri(game_settings: GameSettings, p1: Player) -> bool:
 
 def is_p1_win_in_upper_left_tri(game_settings: GameSettings, player: Player) -> bool:
     """
-    Check if player 1 wins in the upper left triangle.
+    Check if the player wins in the upper left triangle.
 
     Args:
         game_settings (GameSettings): The settings for the game.
-        player (Player): Player 1.
+        player (Player): Player.
 
     Returns:
-        bool: True if player 1 wins in the upper left triangle, False otherwise.
+        bool: True if player wins in the upper left triangle, False otherwise.
     """
     start_col = 0
     places_to_fill = game_settings.board.triangle_length
@@ -59,14 +59,14 @@ def is_p1_win_in_upper_left_tri(game_settings: GameSettings, player: Player) -> 
 
 def is_p1_win_in_lower_left_tri(game_settings: GameSettings, player: Player) -> bool:
     """
-    Check if player 1 wins in the lower left triangle.
+    Check if the player wins in the lower left triangle.
 
     Args:
         game_settings (GameSettings): The settings for the game.
-        player (Player): Player 1.
+        player (Player): Player.
 
     Returns:
-        bool: True if player 1 wins in the lower left triangle, False otherwise.
+        bool: True if player wins in the lower left triangle, False otherwise.
     """
     start_col = game_settings.board.triangle_length-1
     places_to_fill = 1
@@ -86,14 +86,14 @@ def is_p1_win_in_lower_left_tri(game_settings: GameSettings, player: Player) -> 
 
 def is_p1_win_in_upper_right_tri(game_settings: GameSettings, player: Player) -> bool:
     """
-    Check if player 1 wins in the upper right triangle.
+    Check if the player wins in the upper right triangle.
 
     Args:
         game_settings (GameSettings): The settings for the game.
-        player (Player): Player 1.
+        player (Player): Player.
 
     Returns:
-        bool: True if player 1 wins in the upper right triangle, False otherwise.
+        bool: True if player wins in the upper right triangle, False otherwise.
     """
     start_col = (game_settings.board.triangle_length*4)+2
     places_to_fill =game_settings.board.triangle_length
@@ -113,14 +113,14 @@ def is_p1_win_in_upper_right_tri(game_settings: GameSettings, player: Player) ->
 
 def is_p1_win_in_lower_right_tri(game_settings: GameSettings, player: Player) -> bool:
     """
-    Check if player 1 wins in the lower right triangle.
+    Check if the player wins in the lower right triangle.
 
     Args:
         game_settings (GameSettings): The settings for the game.
-        player (Player): Player 1.
+        player (Player): Player.
 
     Returns:
-        bool: True if player 1 wins in the lower right triangle, False otherwise.
+        bool: True if player wins in the lower right triangle, False otherwise.
     """
     start_col = ((game_settings.board.triangle_length*4)+2+(game_settings.board.triangle_length-1))
     places_to_fill = 1
@@ -140,14 +140,14 @@ def is_p1_win_in_lower_right_tri(game_settings: GameSettings, player: Player) ->
 
 def is_p1_win_in_lower_tri(game_settings: GameSettings, player: Player) -> bool:
     """
-    Check if player 1 wins in the lower triangle.
+    Check if the player wins in the lower triangle.
 
     Args:
         game_settings (GameSettings): The settings for the game.
-        player (Player): Player 1.
+        player (Player): Player.
 
     Returns:
-        bool: True if player 1 wins in the lower triangle, False otherwise.
+        bool: True if player wins in the lower triangle, False otherwise.
     """
     start_col = game_settings.board.triangle_length*2+1
     places_to_fill = game_settings.board.triangle_length
@@ -167,14 +167,14 @@ def is_p1_win_in_lower_tri(game_settings: GameSettings, player: Player) -> bool:
 
 def is_p1_win_in_dest(game_settings: GameSettings, player: Player) -> bool:
     """
-    Check if player 1 wins in their destination triangle.
+    Check if the player wins in their destination triangle.
 
     Args:
         game_settings (GameSettings): The settings for the game.
-        player (Player): Player 1.
+        player (Player): Player.
 
     Returns:
-        bool: True if player 1 wins in their destination triangle, False otherwise.
+        bool: True if player wins in their destination triangle, False otherwise.
     """
     TRIANGLES_CHECK = {Triangles.upper_tri: is_p1_win_in_upper_tri,
                        Triangles.upper_left_tri: is_p1_win_in_upper_left_tri,
