@@ -37,12 +37,13 @@ def get_existing_file_name(game_settings:GameSettings) -> str:
                 create_new_game_settings(game_settings)
             if(file_name[-4:]!=".txt"):
                 Logger.name = file_name+".txt"
-            try:
-                with open(file_name, 'r') as f:
-                    if(f.name==file_name):
-                        break
-            except FileNotFoundError:
-                input_provider.print_message_dialog_or_quit("The file does not exist, please try again.", "Ok")
+            # try:
+            #     with open(file_name, 'r') as f:
+            #         if(f.name==file_name):
+            #             break
+            # except FileNotFoundError:
+            #     input_provider.print_message_dialog_or_quit("The file does not exist, please try again.", "Ok")
+            break
     return file_name
 
 def player_pick_valid_file_name(game_settings:GameSettings) -> str:
@@ -145,7 +146,6 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coo
     return (current_loc, go_to)
 
 def single_round(game_settings: GameSettings) -> Union[Player, None]:
-    # print(game_settings.players_list)
     for player in game_settings.players_list:
         if (player.is_comp):
             current_loc, go_to = single_comp_turn(game_settings, player)

@@ -16,7 +16,7 @@ def is_p1_win_in_upper_tri(game_settings: GameSettings, p1: Player) -> bool:
             if (game_settings.board.cell_content((i-1, start+2*j)) == BoardValues.EMPTY):
                 return False
             if(game_settings.board.cell_content((i-1, start+2*j)) != p1.color
-                    and moveValidation.get_all_possible_moves(game_settings, (i-1, start+2*i)) != []):
+                    and moveValidation.get_all_possible_moves(game_settings, (i-1, start+2*j)) != []):
                 return False
         start -= 1
     return True

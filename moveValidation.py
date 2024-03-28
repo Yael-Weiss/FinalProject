@@ -82,9 +82,6 @@ def get_all_possible_moves(game_settings: GameSettings, current_loc: Coordinates
             possible_moves.remove(move)
     return possible_moves
 
-# def is_in_destination(player: Player, loc: Coordinates) -> bool:
-#     return TRIANGLES_CHECK[player.destination_tri](loc)
-
 def is_in_triangle_not_des_not_start(game_settings:GameSettings,player: Player, loc: Coordinates) -> bool:
     for tri in TRIANGLES_CHECK.keys():
         if (player.destination_tri != tri and player.starting_tri != tri):

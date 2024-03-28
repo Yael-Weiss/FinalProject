@@ -62,7 +62,6 @@ def read_and_load_log_file(file_name: str) -> Tuple[GameSettings,bool]:
                 last_line_of_moves = moves_lines.index("")
                 moves_lines = moves_lines[1:last_line_of_moves]
             break
-    
     return get_game_settings_from_log(scores_lines, moves_lines, players_list, triangle_length)
 
 

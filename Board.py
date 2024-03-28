@@ -23,7 +23,7 @@ EMOJI_POSSIBLE_MOVES = ["😽" ,"🐶","🦊","🐒", "🐺" ,"🐱","🐷","�
 
 class Board:
     """
-
+        class that
     """
     def __init__(self,triangle_length:int=4) -> None:
         self.TRIANGLE_LENGTH = triangle_length
