@@ -1,5 +1,4 @@
-from typing import Dict, Tuple, List
-
+from typing import Tuple, List
 from BoardValues import BoardValues
 from player import Player
 from triangles import Triangles
@@ -26,8 +25,6 @@ class Board:
     """
 
     """
-  
-
     def __init__(self,triangle_length:int=4) -> None:
         self.TRIANGLE_LENGTH = triangle_length
         self.EMOJI_NUMS=self.get_emoji_nums(self.TRIANGLE_LENGTH)

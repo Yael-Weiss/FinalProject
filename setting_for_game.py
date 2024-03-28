@@ -131,14 +131,13 @@ class GameSettings:
         if (not self.no_more_player_same_name(player_name, real_players_lst)) or (player_name == "") or (self.str_is_only_spaces(player_name)) or ("_" in player_name) or (len(player_name.split(" ")) > 1):
             return False
         return True
-
+    
     def get_real_players_list(self, num_of_real_players: int, total_num_players: int) -> List[Player]:
         real_players_lst = []
         COLORS_LIST = self.get_colors_list()
         for j in range(num_of_real_players):
             player_name = input_provider.get_input_dialog(
                     f"""What is the name of the player number #{j+1}?: \n
-                    Please don't choose the same name as the other players. \n
                     Please don't use "_" in the name. \nThe name has to be one word. \n""")
             while(True):              
                 while(True):

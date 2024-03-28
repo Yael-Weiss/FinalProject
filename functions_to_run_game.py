@@ -18,32 +18,49 @@ def create_new_game_settings(game_settings: GameSettings) -> Tuple[GameSettings,
                                                     "Do you want to load a game or to start a new one?",
                                                     "start a new game", "load a game")
     if (is_new_game):
-        game_name = input_provider.get_input_dialog(
-            "Pick a name to the Turnir file: ",cancel_text1="Back")
-        if(game_name==None):
-            create_new_game_settings(game_settings)
-
+        file_name = player_pick_valid_file_name(game_settings)
         game_settings.init_board()
         another_game=True
-        Logger.create_file(game_name, game_settings.players_list,game_settings.board.TRIANGLE_LENGTH)
+        Logger.create_file(file_name, game_settings.players_list,game_settings.board.TRIANGLE_LENGTH)
 
     else:
-        file_name = input_provider.get_input_dialog(
-            "Enter the name of the game you want to load: ",cancel_text1="Back")
-        if(file_name==None):
-            create_new_game_settings(game_settings)
-        if(file_name[-4:]!=".txt"):
-            Logger.name = file_name+".txt"
+        file_name = get_existing_file_name(game_settings)
         game_settings,another_game = read_logger.read_and_load_log_file(
             file_name+".txt")
     return (game_settings,another_game)
 
+def get_existing_file_name(game_settings:GameSettings) -> str:
+    while(True):
+            file_name = input_provider.get_input_dialog(
+                "Enter the name of the game you want to load: ",cancel_text1="Back")
+            if(file_name==None):
+                create_new_game_settings(game_settings)
+            if(file_name[-4:]!=".txt"):
+                Logger.name = file_name+".txt"
+            try:
+                with open(file_name, 'r') as f:
+                    if(f.name==file_name):
+                        break
+            except FileNotFoundError:
+                input_provider.print_message_dialog_or_quit("The file does not exist, please try again.", "Ok")
+    return file_name
+
+def player_pick_valid_file_name(game_settings:GameSettings) -> str:
+    while(True):
+            file_name = input_provider.get_input_dialog(
+                "Pick a name to the Turnir file: ",cancel_text1="Back")
+            if(file_name==""):
+                input_provider.print_message_dialog_or_quit("The name cannot be empty, please try again.", "Ok")
+            elif(file_name==None):
+                create_new_game_settings(game_settings)
+            else:
+                break
+    return file_name
 
 def is_winner(game_settings: GameSettings, player: Player):
     if (checking_dest.is_p1_win_in_dest(game_settings, player)):
         return True
     return False
-
 
 def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> Coordinates:
     player_locs_list = triangles_funcs.get_all_locs_4player(
@@ -68,12 +85,7 @@ def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> 
 
     return current_loc
 
-
 def player_choose_destination(game_settings: GameSettings, player: Player, current_loc: Coordinates) -> Coordinates:
-    # possible_moves = moveValidation.get_list_of_possible_moves(
-    #     game_settings, current_loc)
-    # possible_jumps = list(moveValidation.get_set_of_possible_jumps(
-    #     game_settings, current_loc, set({})))
     all_possible_moves = moveValidation.get_all_possible_moves(
         game_settings, current_loc)
     emoji_possible_moves = EMOJI_POSSIBLE_MOVES[:len(all_possible_moves)]
@@ -82,9 +94,7 @@ def player_choose_destination(game_settings: GameSettings, player: Player, curre
         emojy_to_go = input_provider.get_input_with_autocomplete(
             "Where would you like to move it? Click Tab key to see the options. ",
             emoji_possible_moves)
-        print(emojy_to_go)
-        print(emoji_possible_moves)
-        print(emojy_to_go in emoji_possible_moves)
+        
         if (emojy_to_go in emoji_possible_moves):
             break
 
@@ -93,7 +103,6 @@ def player_choose_destination(game_settings: GameSettings, player: Player, curre
     index_in_possible_moves = emoji_possible_moves.index(emojy_to_go)
     go_to = all_possible_moves[index_in_possible_moves]
     return go_to
-
 
 def single_comp_turn(game_settings: GameSettings, comp_player: Player) -> Tuple[Coordinates, Coordinates]:
     while (True):
@@ -115,7 +124,6 @@ def single_comp_turn(game_settings: GameSettings, comp_player: Player) -> Tuple[
     game_settings.board.print_board()
     return (current_loc, go_to)
 
-
 def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coordinates, Coordinates]:
     game_settings.board.print_board(player)
     while (True):
@@ -136,7 +144,6 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coo
     game_settings.board.print_board()
     return (current_loc, go_to)
 
-
 def single_round(game_settings: GameSettings) -> Union[Player, None]:
     # print(game_settings.players_list)
     for player in game_settings.players_list:
@@ -149,7 +156,6 @@ def single_round(game_settings: GameSettings) -> Union[Player, None]:
             return player
     return None
 
-
 def play(game_settings: GameSettings) -> None:
     # """
     # The main driver of the Game. Manages the game until completion.
@@ -160,7 +166,8 @@ def play(game_settings: GameSettings) -> None:
     Each turn the pieces of the relevant player are marked as numbers and
     the player needs to choose which piece he wants to move. \n
     After that, emojies will appear on the board. \n
-    The emojies represent the places that the player can move the piece to.\n
+    🎯 - represents the piece that the player chose to move.\n
+    Animal emojies represent the places that the player can move the piece to.\n
     Enjoy and Good luck!"""
     input_provider.print_message_dialog_or_quit(introduction, "Lets go!")
 
@@ -183,6 +190,3 @@ def play(game_settings: GameSettings) -> None:
         game_settings.score_board.get_str_scores()+f"\nGood job everyone, the game ended.", "Game Ended!")
     game_settings.board.print_board()
 
-
-if __name__ == "__main__":
-    pass
