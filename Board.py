@@ -1,3 +1,4 @@
+import os
 from typing import List, Tuple
 from typing import Tuple, List
 from board_values import BoardValues
@@ -312,17 +313,16 @@ class Board:
         """
         Clears the terminal screen.
 
-        This method clears the terminal screen by printing the escape sequence
-        '\033[H\033[J', which moves the cursor to the top-left corner of the
-        screen and clears the entire screen.
+        This function clears the terminal screen by executing the appropriate command based on the operating system.
+        On Windows, it uses the 'cls' command, and on other systems, it uses the 'clear' command.
 
         Args:
-            self: The Board object.
+            None
 
         Returns:
             None
         """
-        print("\033[H\033[J", end="")
+        os.system('cls' if os.name == 'nt' else 'clear')
 
     def print_board(self, player: Player = None, possible_moves: List[Tuple[int, int]] = None, current_loc: Coordinates = None) -> None:
         """

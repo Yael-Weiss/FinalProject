@@ -202,8 +202,6 @@ def single_comp_turn(game_settings: GameSettings, comp_player: Player) -> Tuple[
             break
 
     moveValidation.move_player(game_settings, comp_player, current_loc, go_to)
-    game_settings.board.clear_screen()
-    game_settings.board.print_board()
     return (current_loc, go_to)
 
 
@@ -218,6 +216,7 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coo
     Returns:
         Tuple[Coordinates, Coordinates]: A tuple containing the current location and the destination coordinates of the player's move.
     """
+    game_settings.board.clear_screen()
     game_settings.board.print_board(player)
     while (True):
         current_loc = player_choose_piece_to_move(game_settings, player)
