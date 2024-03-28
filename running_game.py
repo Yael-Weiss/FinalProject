@@ -1,12 +1,13 @@
 from datetime import datetime
+import re
 from typing import Tuple, Union
 from board import EMOJI_POSSIBLE_MOVES, Board
 from logger import Logger
 from player import Player
-from setting_for_game import GameSettings
+from game_settings import GameSettings
 import moveValidation
 import checking_dest
-import triangles_funcs
+import player_instruments_pos
 import input_provider
 import random
 import read_logger
@@ -26,7 +27,7 @@ def create_new_game_settings(game_settings: GameSettings) -> Tuple[GameSettings,
     else:
         file_name = get_existing_file_name(game_settings)
         game_settings,another_game = read_logger.read_and_load_log_file(
-            file_name+".txt")
+            file_name)
     return (game_settings,another_game)
 
 def get_existing_file_name(game_settings:GameSettings) -> str:
@@ -36,24 +37,25 @@ def get_existing_file_name(game_settings:GameSettings) -> str:
             if(file_name==None):
                 create_new_game_settings(game_settings)
             if(file_name[-4:]!=".txt"):
-                Logger.name = file_name+".txt"
-            # try:
-            #     with open(file_name, 'r') as f:
-            #         if(f.name==file_name):
-            #             break
-            # except FileNotFoundError:
-            #     input_provider.print_message_dialog_or_quit("The file does not exist, please try again.", "Ok")
-            break
+                file_name = file_name+".txt"
+            try:
+                with open(file_name, 'r') as f:
+                    # if(f.name==file_name):
+                    break
+            except FileNotFoundError:
+                input_provider.print_message_dialog_or_quit("The file does not exist, please try again.", "Ok")
+    Logger.name = file_name
     return file_name
 
 def player_pick_valid_file_name(game_settings:GameSettings) -> str:
     while(True):
             file_name = input_provider.get_input_dialog(
-                "Pick a name to the Turnir file: ",cancel_text1="Back")
-            if(file_name==""):
-                input_provider.print_message_dialog_or_quit("The name cannot be empty, please try again.", "Ok")
-            elif(file_name==None):
+                "Pick a name to the tournament file: ",cancel_text1="Back")
+            if(file_name==None):
                 create_new_game_settings(game_settings)
+            results = re.search("^(?!^ $)[a-zA-Z0-9_ -]+$",file_name)
+            if(results==None):
+                input_provider.print_message_dialog_or_quit("The name cannot be empty and cannot include symbols as !@#$%^&* etx. please try again.", "Ok")
             else:
                 break
     return file_name
@@ -64,21 +66,21 @@ def is_winner(game_settings: GameSettings, player: Player):
     return False
 
 def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> Coordinates:
-    player_locs_list = triangles_funcs.get_all_locs_4player(
+    player_locs_list = player_instruments_pos.get_all_locs_4player(
         game_settings.board.the_board, player)
-    emojy_nums = game_settings.board.pieces_nums
+    pieces_nums = game_settings.board.pieces_nums
     while (True):
         while (True):
-            emojy = input_provider.get_input_with_autocomplete(
+            piece = input_provider.get_input_with_autocomplete(
                 "What piece would you like to move? Click Tab key to see the options and choose from them.",
-                emojy_nums)
+                pieces_nums)
 
-            if (emojy in emojy_nums):
+            if (piece in pieces_nums):
                 break
 
             print("Invalid input, let's try again.")
 
-        index_in_players_locs = emojy_nums.index(emojy)
+        index_in_players_locs = pieces_nums.index(piece)
         current_loc = player_locs_list[index_in_players_locs]
         if (moveValidation.get_all_possible_moves(game_settings, current_loc) != []):
             break
@@ -107,7 +109,7 @@ def player_choose_destination(game_settings: GameSettings, player: Player, curre
 
 def single_comp_turn(game_settings: GameSettings, comp_player: Player) -> Tuple[Coordinates, Coordinates]:
     while (True):
-        current_loc = random.choice(triangles_funcs.get_all_locs_4player(
+        current_loc = random.choice(player_instruments_pos.get_all_locs_4player(
             game_settings.board.the_board, comp_player))
 
         if (moveValidation.is_valid_current_loc(game_settings, comp_player, current_loc)):

@@ -1,8 +1,8 @@
 from typing import Tuple, List
-from BoardValues import BoardValues
+from board_values import BoardValues
 from player import Player
 from triangles import Triangles
-import triangles_funcs
+import player_instruments_pos
 
 
 Coordinates = Tuple[int, int]
@@ -22,9 +22,7 @@ EMOJI_POSSIBLE_MOVES = ["😽" ,"🐶","🦊","🐒", "🐺" ,"🐱","🐷","�
 
 
 class Board:
-    """
-        class that
-    """
+
     def __init__(self,triangle_length:int=4) -> None:
         self.triangle_length = triangle_length
         self.pieces_nums=self.get_pieces_nums(self.triangle_length)
@@ -205,7 +203,7 @@ class Board:
 
     def print_board(self, player: Player = None, possible_moves: List[Tuple[int, int]] = None, current_loc: Coordinates = None) -> None:
         if (player != None):
-            player_locs_list = triangles_funcs.get_all_locs_4player(
+            player_locs_list = player_instruments_pos.get_all_locs_4player(
                 self.the_board, player)
 
         for i in range(len(self.the_board)):

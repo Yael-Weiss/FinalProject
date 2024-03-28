@@ -1,9 +1,7 @@
-from typing import Dict, Tuple, List
-
+from typing import List
 
 from board import Board
-from BoardValues import BoardValues
-from logger import Logger
+from board_values import BoardValues
 from player import Player
 from scores_board import ScoresBoard
 from triangles import Triangles
@@ -72,6 +70,26 @@ class GameSettings:
                 return False
         return True
 
+    def get_colors_list(self) -> List[BoardValues]:
+        COLORS_LIST = [(b, b.name) for b in BoardValues]
+        COLORS_LIST.remove((BoardValues.EMPTY, BoardValues.EMPTY.name))
+        COLORS_LIST.remove(
+            (BoardValues.OUT_OF_BOARD, BoardValues.OUT_OF_BOARD.name))
+        return COLORS_LIST
+
+    def get_tri_size(self):
+        tri_size = input_provider.get_input_dialog("""What size you want the board? 
+                                        \nIt is recommended to choose a number between 2-10. 
+                                        \nYou can choose a bigger one if you have a big screen.""")
+        while True:
+            if (tri_size.isdigit() and 1 < int(tri_size)):
+                break
+            tri_size = input_provider.get_input_dialog("""Invalid input, try again. 
+                                                     \nWhat size you want the board? 
+                                        \nIt is recommended to choose a number between 2-10. 
+                                        \nYou can choose a bigger one if you have a big screen.""")
+        return tri_size
+
     def get_num_of_players_and_comps(self) -> int:
         possible_num_of_players = []
         for x in range(POSSIBLE_NUM_OF_PLAYERS):
@@ -84,7 +102,6 @@ class GameSettings:
                                                                            \n(In the next window you will enter the details of the real players)""",
                                                                            possible_num_of_players)
         if (num_of_comp_players == None):
-
             self.get_num_of_players_and_comps()
 
         possible_num_of_real_players = []
@@ -108,30 +125,6 @@ class GameSettings:
                 real_players_list)+i], True)
             comp_players.append(player)
         return comp_players
-
-    def get_list_all_players(self, real_players_list: List[Player], comp_players: List[Player]) -> List[Player]:
-        all_players = real_players_list + comp_players
-        return all_players
-
-    def get_colors_list(self) -> List[BoardValues]:
-        COLORS_LIST = [(b, b.name) for b in BoardValues]
-        COLORS_LIST.remove((BoardValues.EMPTY, BoardValues.EMPTY.name))
-        COLORS_LIST.remove(
-            (BoardValues.OUT_OF_BOARD, BoardValues.OUT_OF_BOARD.name))
-        return COLORS_LIST
-
-    def get_tri_size(self):
-        tri_size = input_provider.get_input_dialog("""What size you want the board? 
-                                        \nIt is recommended to choose a number between 2-10. 
-                                        \nYou can choose a bigger one if you have a big screen.""")
-        while True:
-            if (tri_size.isdigit() and 1 < int(tri_size)):
-                break
-            tri_size = input_provider.get_input_dialog("""Invalid input, try again. 
-                                                     \nWhat size you want the board? 
-                                        \nIt is recommended to choose a number between 2-10. 
-                                        \nYou can choose a bigger one if you have a big screen.""")
-        return tri_size
 
     def get_valid_player_name(self,player_number:int, real_players_lst: List[Player]) -> str:
         player_name = input_provider.get_input_dialog(
@@ -183,6 +176,3 @@ class GameSettings:
                                                  num_of_real_players+num_of_comp_players, real_players_list)
         return real_players_list+comp_player_list
 
-
-if __name__ == "__main__":
-    pass

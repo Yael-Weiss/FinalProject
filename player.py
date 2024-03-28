@@ -1,4 +1,4 @@
-from BoardValues import BoardValues
+from board_values import BoardValues
 from triangles import Triangles
 
 

@@ -1,9 +1,9 @@
 from typing import List, Tuple
-from BoardValues import BoardValues
+from board_values import BoardValues
 from board import Board
 from logger import Logger
 from player import Player
-from setting_for_game import GameSettings
+from game_settings import GameSettings
 from triangles import Triangles
 import moveValidation
 from scores_board import ScoresBoard
@@ -84,7 +84,6 @@ def get_game_settings_from_log(scores_lines: List[str], moves_lines: List[str], 
     
     if(moves_lines==[]):
         return (game_settings,True)
-    print(moves_lines)
     set_moves_and_move_from_log(moves_lines[1:], game_settings)
     return (game_settings,False)
 

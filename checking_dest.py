@@ -1,8 +1,7 @@
 from typing import Tuple
-from BoardValues import BoardValues
-from board import Board
+from board_values import BoardValues
 from player import Player
-from setting_for_game import GameSettings
+from game_settings import GameSettings
 from triangles import Triangles
 import moveValidation
 
@@ -10,6 +9,16 @@ Coordinates = Tuple[int, int]
 
 
 def is_p1_win_in_upper_tri(game_settings: GameSettings, p1: Player) -> bool:
+    """
+    Check if player 1 wins in the upper triangle.
+
+    Args:
+        game_settings (GameSettings): The settings for the game.
+        p1 (Player): Player 1.
+
+    Returns:
+        bool: True if player 1 wins in the upper triangle, False otherwise.
+    """
     start = game_settings.board.board_width//2
     for i in range(1, 1+game_settings.board.triangle_length):
         for j in range(i):
@@ -22,6 +31,16 @@ def is_p1_win_in_upper_tri(game_settings: GameSettings, p1: Player) -> bool:
     return True
 
 def is_p1_win_in_upper_left_tri(game_settings: GameSettings, player: Player) -> bool:
+    """
+    Check if player 1 wins in the upper left triangle.
+
+    Args:
+        game_settings (GameSettings): The settings for the game.
+        player (Player): Player 1.
+
+    Returns:
+        bool: True if player 1 wins in the upper left triangle, False otherwise.
+    """
     start_col = 0
     places_to_fill = game_settings.board.triangle_length
     start_row = game_settings.board.triangle_length
@@ -39,6 +58,16 @@ def is_p1_win_in_upper_left_tri(game_settings: GameSettings, player: Player) -> 
     return True
 
 def is_p1_win_in_lower_left_tri(game_settings: GameSettings, player: Player) -> bool:
+    """
+    Check if player 1 wins in the lower left triangle.
+
+    Args:
+        game_settings (GameSettings): The settings for the game.
+        player (Player): Player 1.
+
+    Returns:
+        bool: True if player 1 wins in the lower left triangle, False otherwise.
+    """
     start_col = game_settings.board.triangle_length-1
     places_to_fill = 1
     start_row = (game_settings.board.triangle_length*2+1)
@@ -56,6 +85,16 @@ def is_p1_win_in_lower_left_tri(game_settings: GameSettings, player: Player) -> 
     return True
 
 def is_p1_win_in_upper_right_tri(game_settings: GameSettings, player: Player) -> bool:
+    """
+    Check if player 1 wins in the upper right triangle.
+
+    Args:
+        game_settings (GameSettings): The settings for the game.
+        player (Player): Player 1.
+
+    Returns:
+        bool: True if player 1 wins in the upper right triangle, False otherwise.
+    """
     start_col = (game_settings.board.triangle_length*4)+2
     places_to_fill =game_settings.board.triangle_length
     start_row = game_settings.board.triangle_length
@@ -73,6 +112,16 @@ def is_p1_win_in_upper_right_tri(game_settings: GameSettings, player: Player) ->
     return True
 
 def is_p1_win_in_lower_right_tri(game_settings: GameSettings, player: Player) -> bool:
+    """
+    Check if player 1 wins in the lower right triangle.
+
+    Args:
+        game_settings (GameSettings): The settings for the game.
+        player (Player): Player 1.
+
+    Returns:
+        bool: True if player 1 wins in the lower right triangle, False otherwise.
+    """
     start_col = ((game_settings.board.triangle_length*4)+2+(game_settings.board.triangle_length-1))
     places_to_fill = 1
     start_row = game_settings.board.triangle_length*2+1
@@ -90,6 +139,16 @@ def is_p1_win_in_lower_right_tri(game_settings: GameSettings, player: Player) ->
     return True
 
 def is_p1_win_in_lower_tri(game_settings: GameSettings, player: Player) -> bool:
+    """
+    Check if player 1 wins in the lower triangle.
+
+    Args:
+        game_settings (GameSettings): The settings for the game.
+        player (Player): Player 1.
+
+    Returns:
+        bool: True if player 1 wins in the lower triangle, False otherwise.
+    """
     start_col = game_settings.board.triangle_length*2+1
     places_to_fill = game_settings.board.triangle_length
     start_row = game_settings.board.board_length-game_settings.board.triangle_length
@@ -107,6 +166,16 @@ def is_p1_win_in_lower_tri(game_settings: GameSettings, player: Player) -> bool:
     return True
 
 def is_p1_win_in_dest(game_settings: GameSettings, player: Player) -> bool:
+    """
+    Check if player 1 wins in their destination triangle.
+
+    Args:
+        game_settings (GameSettings): The settings for the game.
+        player (Player): Player 1.
+
+    Returns:
+        bool: True if player 1 wins in their destination triangle, False otherwise.
+    """
     TRIANGLES_CHECK = {Triangles.upper_tri: is_p1_win_in_upper_tri,
                        Triangles.upper_left_tri: is_p1_win_in_upper_left_tri,
                        Triangles.lower_left_tri: is_p1_win_in_lower_left_tri,
@@ -114,93 +183,3 @@ def is_p1_win_in_dest(game_settings: GameSettings, player: Player) -> bool:
                        Triangles.lower_right_tri: is_p1_win_in_lower_right_tri,
                        Triangles.lower_tri: is_p1_win_in_lower_tri}
     return TRIANGLES_CHECK[player.destination_tri](game_settings, player)
-
-
-# def are_all_upper_tri_same_color(board: Board, player: Player) -> bool:
-#     start = 12
-#     for i in range(1, 5):
-#         for j in range(i):
-#             if (board.the_board[i-1][start+2*j] != player.color):
-#                 return False
-#         start -= 1
-#     return True
-
-
-# def are_all_upper_left_tri_same_color(board: Board, player: Player) -> bool:
-#     start_col = 0
-#     places_to_fill = 4
-#     start_row = 4
-#     while (start_row != 9):
-#         for i in range(places_to_fill):
-#             if (board.the_board[start_row][start_col+2*i] != player.color):
-#                 return False
-#         start_col += 1
-#         start_row += 1
-#         places_to_fill -= 1
-#     return True
-
-
-# def are_all_lower_left_tri_same_color(board: Board, player: Player) -> bool:
-#     start_col = 3
-#     places_to_fill = 1
-#     start_row = 9
-#     while (start_row != 13):
-#         for i in range(places_to_fill):
-#             if (board.the_board[start_row][start_col+2*i] != player.color):
-#                 return False
-#         start_col -= 1
-#         start_row += 1
-#         places_to_fill += 1
-#     return True
-
-
-# def are_all_upper_right_tri_same_color(board: Board, player: Player) -> bool:
-#     start_col = 18
-#     places_to_fill = 4
-#     start_row = 4
-#     while (start_row != 9):
-#         for i in range(places_to_fill):
-#             if (board.the_board[start_row][start_col+2*i] != player.color):
-#                 return False
-#         start_col += 1
-#         start_row += 1
-#         places_to_fill -= 1
-#     return True
-
-
-# def are_all_lower_right_tri_same_color(board: Board, player: Player) -> bool:
-#     start_col = 21
-#     places_to_fill = 1
-#     start_row = 9
-#     while (start_row != 13):
-#         for i in range(places_to_fill):
-#             if (board.the_board[start_row][start_col+2*i] != player.color):
-#                 return False
-#         start_col -= 1
-#         start_row += 1
-#         places_to_fill += 1
-#     return True
-
-
-# def are_all_lower_tri_same_color(board: Board, player: Player) -> bool:
-#     start_col = 9
-#     places_to_fill = 4
-#     start_row = 13
-#     while (start_col != 13):
-#         for i in range(places_to_fill):
-#             if (board.the_board[start_row][start_col+2*i] != player.color):
-#                 return False
-#         start_col += 1
-#         start_row += 1
-#         places_to_fill -= 1
-#     return True
-
-
-# def is_all_in_dest(board: Board, player: Player) -> bool:
-#     TRIANGLES_TO_DEST = {Triangles.upper_tri: are_all_upper_tri_same_color,
-#                          Triangles.upper_left_tri: are_all_upper_left_tri_same_color,
-#                          Triangles.lower_left_tri: are_all_lower_left_tri_same_color,
-#                          Triangles.upper_right_tri: are_all_upper_right_tri_same_color,
-#                          Triangles.lower_right_tri: are_all_lower_right_tri_same_color,
-#                          Triangles.lower_tri: are_all_lower_tri_same_color}
-#     return TRIANGLES_TO_DEST[player.destination_tri](board, player)

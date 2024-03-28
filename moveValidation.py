@@ -1,7 +1,7 @@
 from typing import List, Tuple
-from BoardValues import BoardValues
+from board_values import BoardValues
 from player import Player
-from setting_for_game import GameSettings
+from game_settings import GameSettings
 from triangles import Triangles
 import checking_tri
 
@@ -104,7 +104,4 @@ def move_player(game_settings: GameSettings, player: Player, loc: Coordinates, g
         return True
     return False
 
-
-if __name__ == "__main__":
-    pass
     

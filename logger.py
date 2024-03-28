@@ -1,8 +1,6 @@
 from typing import List, Tuple
 from datetime import datetime
-
 from player import Player
-from triangles import Triangles
 
 Coordinates = Tuple[int, int]
 
