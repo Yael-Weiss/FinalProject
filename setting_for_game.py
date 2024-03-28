@@ -87,6 +87,7 @@ class GameSettings:
                                                                            \n(In the next window you will enter the details of the real players)""",
                                                                            possible_num_of_players,"too late, you must choose a number")
         if(num_of_comp_players==None):
+            
             self.get_num_of_players_and_comps()
 
         possible_num_of_real_players = []

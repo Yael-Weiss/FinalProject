@@ -37,10 +37,6 @@ class Logger:
             f.write(message + '\n')
 
     def add_scores_message(message: str) -> None:
-        time = datetime.now().strftime("%Y-%m-%d")+" " + \
-            datetime.now().strftime("%H:%M:%S")
         with open(Logger.name, 'a') as f:
-            f.write("\n"+time+" "+message + '\n\n')
-# p1=Player("shir","red",Triangles.upper_tri)
-# Logger.create_file("log10.txt",[p1])
-# Logger.add_message(p1.name,(1,1),(2,2))
+            f.write("\n"+message + '\n\n')
+

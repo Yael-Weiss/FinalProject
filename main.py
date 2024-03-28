@@ -23,7 +23,7 @@ def main():
     while (True):
         game_settings = functions_to_run_game.create_new_game_settings(
             game_settings)
-        game_settings.players_list[0].destination_tri = Triangles.lower_tri
+        game_settings.players_list[0].destination_tri = Triangles.upper_tri
         while (True):
             Logger.start_new_game_log()
             functions_to_run_game.play(game_settings)
@@ -36,4 +36,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    game_setting = GameSettings()
+    game_settings = functions_to_run_game.create_new_game_settings(game_setting)

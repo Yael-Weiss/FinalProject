@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Tuple, Union
 from board import EMOJI_POSSIBLE_MOVES, Board
 from logger import Logger
@@ -11,11 +12,6 @@ import random
 import read_logger
 
 Coordinates = Tuple[int, int]
-
-
-def is_end_game(game_settings: GameSettings, player: Player) -> bool:
-    pass
-
 
 def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
     is_new_game = input_provider.make_yes_no_dialog("Welcome to Chinese Checkers Game!",
@@ -35,15 +31,14 @@ def create_new_game_settings(game_settings: GameSettings) -> GameSettings:
             "Enter the name of the game you want to load: ",cancel_text1="Back")
         if(file_name==None):
             create_new_game_settings(game_settings)
-
-        Logger.name = file_name+".txt"
+        if(file_name[-4:]!=".txt"):
+            Logger.name = file_name+".txt"
         game_settings = read_logger.read_and_load_log_file(
             file_name+".txt")
     return game_settings
 
 
 def is_winner(game_settings: GameSettings, player: Player):
-    # needs to add case that there are stuck pieces inside
     if (checking_dest.is_p1_win_in_dest(game_settings, player)):
         return True
     return False
@@ -180,7 +175,9 @@ def play(game_settings: GameSettings) -> None:
     for p in game_settings.players_list:
         if p != player:
             game_settings.score_board.add_loser(p)
-    Logger.add_scores_message(game_settings.score_board.get_str_scores())
+    time = datetime.now().strftime("%Y-%m-%d")+" " + \
+            datetime.now().strftime("%H:%M:%S")
+    Logger.add_scores_message("The game ended. These are the results: "+"\n"+time+" "+game_settings.score_board.get_str_scores())
     input_provider.print_message_dialog_or_quit(
         game_settings.score_board.get_str_scores()+f"\nGood job everyone, the game ended.", "Game Ended!")
     game_settings.board.print_board()

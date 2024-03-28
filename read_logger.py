@@ -6,6 +6,7 @@ from player import Player
 from setting_for_game import GameSettings
 from triangles import Triangles
 import moveValidation
+from scores_board import ScoresBoard
 
 COLORS = {
     "BoardValues.RED": BoardValues.RED,
@@ -31,7 +32,6 @@ def from_str_to_coordinates(str: str) -> tuple[int,int]:
     num2 = str[coma_index+1:len(str)-1]
     return (int(num1), int(num2))
 
-
 def read_and_load_log_file(file_name: str) -> GameSettings:
     with open(file_name, 'r') as f:
         lines = [line.strip() for line in f.readlines()]
@@ -49,8 +49,11 @@ def read_and_load_log_file(file_name: str) -> GameSettings:
     else:
         last_line_of_moves=lines.index("")
     lines_for_game_settings = lines[1:last_line_of_moves]
-
-    return get_game_settings_from_log(lines_for_game_settings, players_list,triangle_length)
+    rest_of_lines = lines[last_line_of_moves+1:]
+    print(lines_for_game_settings)
+    print("p")
+    print(rest_of_lines)
+    return get_game_settings_from_log(rest_of_lines,lines_for_game_settings, players_list,triangle_length)
 
 
 def get_players_list_from_log(lines: List[str]) -> list[Player]:
@@ -63,7 +66,7 @@ def get_players_list_from_log(lines: List[str]) -> list[Player]:
     return players_list
 
 
-def get_game_settings_from_log(lines: List[str], players_list: List[Player],triangle_length:int=4) -> GameSettings:
+def get_game_settings_from_log(rest_of_lines:List[str],lines: List[str], players_list: List[Player],triangle_length:int=4) -> GameSettings:
     game_settings = GameSettings()
     game_settings.players_list = players_list
     game_settings.init_only_board(triangle_length)
@@ -76,7 +79,24 @@ def get_game_settings_from_log(lines: List[str], players_list: List[Player],tria
         go_to = from_str_to_coordinates(splited_line[3])
         moveValidation.move_player(
             game_settings, player_to_move, current_loc, go_to)
+    
     game_settings.score_board.init_players_scores(game_settings.players_list)
+
+    for line in rest_of_lines:
+        if (line == "The other players scores are:"):
+            scores_lines=rest_of_lines[rest_of_lines.index(line)+1:]
+            break
+    print(scores_lines)
+    for line in scores_lines:
+        splited_line = line.split(" ")
+        for i in range(len(players_list)):
+            if players_list[i].name == splited_line[0]:
+                player_name=players_list[i].name
+                game_settings.score_board.set_num_of_wins(player_name,int(splited_line[2]))
+                game_settings.score_board.set_num_of_loses(player_name,int(splited_line[6]))
+    print(game_settings.score_board.get_str_scores())
+            
+
     return game_settings
 
 
