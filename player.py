@@ -22,5 +22,7 @@ class Player:
         self.destination_tri = self.TRIANGLES_OPPOSITES[starting_tri]
 
     def __str__(self) -> str:
-        player_str = f"{self.name}'s color: {self.color}, starting triangle: {self.starting_tri}, destination triangle:{self.destination_tri}\n"
+        player_str = f"""{self.name}'s color: {self.color}, 
+        starting triangle: {self.starting_tri}, 
+        destination triangle:{self.destination_tri}\n"""
         return player_str

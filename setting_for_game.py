@@ -27,6 +27,7 @@ POSSIBLE_NUM_OF_PLAYERS = 6
 
 
 class GameSettings:
+
     def __init__(self) -> None:
         self.board = None
         self.players_list = []
@@ -60,20 +61,16 @@ class GameSettings:
             colors_list.remove(player.color)
         return colors_list
 
-    def get_comp_players(self, num_of_comp_players: int, total_num_of_players: int, real_players_list: List[Player]) -> List[Player]:
-        comp_players = []
-        colors_list = self.get_remaining_colors(real_players_list)
-        for i in range(num_of_comp_players):
-            player_name = f"Computer#{i+1}"
-            player_color = colors_list[i]
-            player = Player(player_name, player_color, TRIANGLES_DICT[total_num_of_players][len(
-                real_players_list)+i], True)
-            comp_players.append(player)
-        return comp_players
+    def is_valid_name(self, player_name, real_players_lst) -> bool:
+        if (not self.no_more_player_same_name(player_name, real_players_lst)) or (player_name == "") or (self.str_is_only_spaces(player_name)) or ("_" in player_name) or (len(player_name.split(" ")) > 1):
+            return False
+        return True
 
-    def get_list_all_players(self, real_players_list: List[Player], comp_players: List[Player]) -> List[Player]:
-        all_players = real_players_list + comp_players
-        return all_players
+    def str_is_only_spaces(self, name: str) -> bool:
+        for i in name:
+            if (i != " "):
+                return False
+        return True
 
     def get_num_of_players_and_comps(self) -> int:
         possible_num_of_players = []
@@ -101,18 +98,27 @@ class GameSettings:
                                                                            possible_num_of_real_players)
         return num_of_real_players, num_of_comp_players
 
+    def get_comp_players(self, num_of_comp_players: int, total_num_of_players: int, real_players_list: List[Player]) -> List[Player]:
+        comp_players = []
+        colors_list = self.get_remaining_colors(real_players_list)
+        for i in range(num_of_comp_players):
+            player_name = f"Computer#{i+1}"
+            player_color = colors_list[i]
+            player = Player(player_name, player_color, TRIANGLES_DICT[total_num_of_players][len(
+                real_players_list)+i], True)
+            comp_players.append(player)
+        return comp_players
+
+    def get_list_all_players(self, real_players_list: List[Player], comp_players: List[Player]) -> List[Player]:
+        all_players = real_players_list + comp_players
+        return all_players
+
     def get_colors_list(self) -> List[BoardValues]:
         COLORS_LIST = [(b, b.name) for b in BoardValues]
         COLORS_LIST.remove((BoardValues.EMPTY, BoardValues.EMPTY.name))
         COLORS_LIST.remove(
             (BoardValues.OUT_OF_BOARD, BoardValues.OUT_OF_BOARD.name))
         return COLORS_LIST
-
-    def str_is_only_spaces(self, name: str) -> bool:
-        for i in name:
-            if (i != " "):
-                return False
-        return True
 
     def get_tri_size(self):
         tri_size = input_provider.get_input_dialog("""What size you want the board? 
@@ -126,42 +132,40 @@ class GameSettings:
                                         \nIt is recommended to choose a number between 2-10. 
                                         \nYou can choose a bigger one if you have a big screen.""")
         return tri_size
-    
-    def is_valid_name(self,player_name,real_players_lst)->bool:
-        if (not self.no_more_player_same_name(player_name, real_players_lst)) or (player_name == "") or (self.str_is_only_spaces(player_name)) or ("_" in player_name) or (len(player_name.split(" ")) > 1):
-            return False
-        return True
-    
+
+    def get_valid_player_name(self,player_number:int, real_players_lst: List[Player]) -> str:
+        player_name = input_provider.get_input_dialog(
+            f"""What is the name of the player number #{player_number}?: \n
+                    Please don't use "_" in the name. \nThe name has to be one word. \n""")
+        while (True):
+            while (True):
+                if (player_name == "" or self.str_is_only_spaces(player_name)):
+                    player_name = input_provider.get_input_dialog(
+                        f"You didn't enter a name, please choose one.\nPlease choose a name for the player number #{player_number}?: \n")
+                elif ("_" in player_name):
+                    player_name = input_provider.get_input_dialog(
+                        f"""Please don't use "_" in the name. \n
+                            What is the name of the player number #{player_number}?: \n""")
+                elif (len(player_name.split(" ")) > 1):
+                    player_name = input_provider.get_input_dialog(
+                        f"""The name has to be one word. \n
+                            What is the name of the player number #{player_number}?: \n""")
+                elif (not self.no_more_player_same_name(player_name, real_players_lst)):
+                    player_name = input_provider.get_input_dialog(
+                        f"""There's already a player with this name, please choose different one. \n
+                        Please don't use "_" in the name. \n
+                        What is the name of the player number #{player_number}?: \n""")
+                else:
+                    break
+            if (self.is_valid_name(player_name, real_players_lst)):
+                break
+        return player_name
+
     def get_real_players_list(self, num_of_real_players: int, total_num_players: int) -> List[Player]:
         real_players_lst = []
         COLORS_LIST = self.get_colors_list()
         for j in range(num_of_real_players):
-            player_name = input_provider.get_input_dialog(
-                    f"""What is the name of the player number #{j+1}?: \n
-                    Please don't use "_" in the name. \nThe name has to be one word. \n""")
-            while(True):              
-                while(True):
-                    if(player_name == "" or self.str_is_only_spaces(player_name)):
-                        player_name = input_provider.get_input_dialog(
-                                f"You didn't enter a name, please choose one.\nPlease choose a name for the player number #{j+1}?: \n")
-                    elif("_" in player_name):
-                        player_name = input_provider.get_input_dialog(
-                                f"""Please don't use "_" in the name. \n
-                                What is the name of the player number #{j+1}?: \n""")
-                    elif(len(player_name.split(" ")) > 1):
-                        player_name = input_provider.get_input_dialog(
-                                f"""The name has to be one word. \n
-                                What is the name of the player number #{j+1}?: \n""")
-                    elif (not self.no_more_player_same_name(player_name, real_players_lst)):
-                        player_name = input_provider.get_input_dialog(
-                            f"""There's already a player with this name, please choose different one. \n
-                            Please don't use "_" in the name. \n
-                            What is the name of the player number #{j+1}?: \n""")
-                    else:
-                        break
-                if(self.is_valid_name(player_name,real_players_lst)):
-                        break
-
+            player_name = self.get_valid_player_name(j+1,real_players_lst)
             player_color = input_provider.get_input_in_radiolist_dialog(
                 f"Hello {player_name}, What color would you like to be?", COLORS_LIST)
 

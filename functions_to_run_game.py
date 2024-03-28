@@ -21,7 +21,7 @@ def create_new_game_settings(game_settings: GameSettings) -> Tuple[GameSettings,
         file_name = player_pick_valid_file_name(game_settings)
         game_settings.init_board()
         another_game=True
-        Logger.create_file(file_name, game_settings.players_list,game_settings.board.TRIANGLE_LENGTH)
+        Logger.create_file(file_name, game_settings.players_list,game_settings.board.triangle_length)
 
     else:
         file_name = get_existing_file_name(game_settings)
@@ -66,7 +66,7 @@ def is_winner(game_settings: GameSettings, player: Player):
 def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> Coordinates:
     player_locs_list = triangles_funcs.get_all_locs_4player(
         game_settings.board.the_board, player)
-    emojy_nums = game_settings.board.EMOJI_NUMS
+    emojy_nums = game_settings.board.pieces_nums
     while (True):
         while (True):
             emojy = input_provider.get_input_with_autocomplete(

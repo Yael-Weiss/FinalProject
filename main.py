@@ -1,7 +1,6 @@
 from typing import Tuple
 from logger import Logger
 from setting_for_game import GameSettings
-from triangles import Triangles
 import functions_to_run_game
 import input_provider
 
@@ -23,7 +22,7 @@ def main():
                 "Chinese Checkers Game", "Do you want to play again?")
             if not another_game:
                 break
-            game_settings.init_only_board(game_settings.board.TRIANGLE_LENGTH)
+            game_settings.init_only_board(game_settings.board.triangle_length)
         break
 
 

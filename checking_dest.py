@@ -10,8 +10,8 @@ Coordinates = Tuple[int, int]
 
 
 def is_p1_win_in_upper_tri(game_settings: GameSettings, p1: Player) -> bool:
-    start = game_settings.board.BOARD_WIDTH//2
-    for i in range(1, 1+game_settings.board.TRIANGLE_LENGTH):
+    start = game_settings.board.board_width//2
+    for i in range(1, 1+game_settings.board.triangle_length):
         for j in range(i):
             if (game_settings.board.cell_content((i-1, start+2*j)) == BoardValues.EMPTY):
                 return False
@@ -23,9 +23,9 @@ def is_p1_win_in_upper_tri(game_settings: GameSettings, p1: Player) -> bool:
 
 def is_p1_win_in_upper_left_tri(game_settings: GameSettings, player: Player) -> bool:
     start_col = 0
-    places_to_fill = game_settings.board.TRIANGLE_LENGTH
-    start_row = game_settings.board.TRIANGLE_LENGTH
-    stop_while=(game_settings.board.TRIANGLE_LENGTH*2+1)
+    places_to_fill = game_settings.board.triangle_length
+    start_row = game_settings.board.triangle_length
+    stop_while=(game_settings.board.triangle_length*2+1)
     while (start_row != stop_while):
         for i in range(places_to_fill):
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
@@ -39,10 +39,10 @@ def is_p1_win_in_upper_left_tri(game_settings: GameSettings, player: Player) -> 
     return True
 
 def is_p1_win_in_lower_left_tri(game_settings: GameSettings, player: Player) -> bool:
-    start_col = game_settings.board.TRIANGLE_LENGTH-1
+    start_col = game_settings.board.triangle_length-1
     places_to_fill = 1
-    start_row = (game_settings.board.TRIANGLE_LENGTH*2+1)
-    stop_while=start_row+game_settings.board.TRIANGLE_LENGTH
+    start_row = (game_settings.board.triangle_length*2+1)
+    stop_while=start_row+game_settings.board.triangle_length
     while (start_row != stop_while):
         for i in range(places_to_fill):
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
@@ -56,10 +56,10 @@ def is_p1_win_in_lower_left_tri(game_settings: GameSettings, player: Player) -> 
     return True
 
 def is_p1_win_in_upper_right_tri(game_settings: GameSettings, player: Player) -> bool:
-    start_col = (game_settings.board.TRIANGLE_LENGTH*4)+2
-    places_to_fill =game_settings.board.TRIANGLE_LENGTH
-    start_row = game_settings.board.TRIANGLE_LENGTH
-    stop_while=(game_settings.board.TRIANGLE_LENGTH*2+1)
+    start_col = (game_settings.board.triangle_length*4)+2
+    places_to_fill =game_settings.board.triangle_length
+    start_row = game_settings.board.triangle_length
+    stop_while=(game_settings.board.triangle_length*2+1)
     while (start_row != stop_while):
         for i in range(places_to_fill):
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
@@ -73,10 +73,10 @@ def is_p1_win_in_upper_right_tri(game_settings: GameSettings, player: Player) ->
     return True
 
 def is_p1_win_in_lower_right_tri(game_settings: GameSettings, player: Player) -> bool:
-    start_col = ((game_settings.board.TRIANGLE_LENGTH*4)+2+(game_settings.board.TRIANGLE_LENGTH-1))
+    start_col = ((game_settings.board.triangle_length*4)+2+(game_settings.board.triangle_length-1))
     places_to_fill = 1
-    start_row = game_settings.board.TRIANGLE_LENGTH*2+1
-    stop_while=start_row+game_settings.board.TRIANGLE_LENGTH
+    start_row = game_settings.board.triangle_length*2+1
+    stop_while=start_row+game_settings.board.triangle_length
     while (start_row != stop_while):
         for i in range(places_to_fill):
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
@@ -90,10 +90,10 @@ def is_p1_win_in_lower_right_tri(game_settings: GameSettings, player: Player) ->
     return True
 
 def is_p1_win_in_lower_tri(game_settings: GameSettings, player: Player) -> bool:
-    start_col = game_settings.board.TRIANGLE_LENGTH*2+1
-    places_to_fill = game_settings.board.TRIANGLE_LENGTH
-    start_row = game_settings.board.BOARD_LENGTH-game_settings.board.TRIANGLE_LENGTH
-    stop_while = (start_col+game_settings.board.TRIANGLE_LENGTH)
+    start_col = game_settings.board.triangle_length*2+1
+    places_to_fill = game_settings.board.triangle_length
+    start_row = game_settings.board.board_length-game_settings.board.triangle_length
+    stop_while = (start_col+game_settings.board.triangle_length)
     while (start_col != stop_while):
         for i in range(places_to_fill):
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
