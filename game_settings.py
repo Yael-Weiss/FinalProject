@@ -1,6 +1,6 @@
 from typing import List
 
-from board import Board
+from board2 import Board
 from board_values import BoardValues
 from player import Player
 from scores_board import ScoresBoard

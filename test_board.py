@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from board import Board
+from board2 import Board
 
 class TestBoard(unittest.TestCase):
 
