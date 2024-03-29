@@ -1,12 +1,7 @@
-from typing import Tuple
 from logger import Logger
 from game_settings import GameSettings
 import running_game
 import input_provider
-
-# Coordinates = Tuple[int, int]
-# DIRECTIONS_LIST = [(-2, -2), (-2, 2), (2, -2), (2, 2)]
-
 
 def main():
     """

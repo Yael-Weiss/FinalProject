@@ -150,16 +150,35 @@ class GameSettings:
         Returns:
             int: The size of the game board.
         """
-        tri_size = input_provider.get_input_dialog("""What size you want the board? 
-                                        \nIt is recommended to choose a number between 2-10. 
-                                        \nYou can choose a bigger one if you have a big screen.""")
-        while True:
-            if (tri_size.isdigit() and 1 < int(tri_size)):
+        while(True):
+            tri_size = input_provider.get_input_dialog("""What size you want the board? 
+                                            \nIt is recommended to choose a number between 2-10. 
+                                            \nYou can choose a bigger one if you have a big screen.""")
+            while True:
+                if (tri_size.isdigit()):
+                    if(1 < int(tri_size)<13):
+                        break
+                    else:
+                        tri_size = input_provider.get_input_dialog("""Let's be honest, your screen is not so big and your computer is not so strong, please try again. 
+                                                            \nWhat size you want the board? 
+                                                \nIt is recommended to choose a number between 2-10. 
+                                                \nYou can choose a bigger one if you have a big screen and strong computer.""")    
+                else:        
+                    tri_size = input_provider.get_input_dialog("""Invalid input, try again. 
+                                                            \nWhat size you want the board? 
+                                                \nIt is recommended to choose a number between 2-10. 
+                                                \nYou can choose a bigger one if you have a big screen and strong computer.""")
+            input_provider.print_message_dialog("In the next window you'll see an empty board. \nThe board will be in size "+tri_size+" as you chose.\nPlease ensure that this is the size of the board that you want.","Let's see the board")
+            temp_board = Board(int(tri_size))
+            temp_board.get_empty_board()
+            temp_board.clear_screen()
+            temp_board.print_board()
+            input("Press click enter to continue")
+            temp_board.clear_screen()
+            ensuring_message = "You chose the board to be in size "+tri_size+". \nDo you want to continue with this size?"
+            if(input_provider.make_yes_no_dialog("Chinese Checkers Game",ensuring_message , "Yes", "No")):
                 break
-            tri_size = input_provider.get_input_dialog("""Invalid input, try again. 
-                                                     \nWhat size you want the board? 
-                                        \nIt is recommended to choose a number between 2-10. 
-                                        \nYou can choose a bigger one if you have a big screen.""")
+
         return int(tri_size)
 
     def get_num_of_players_and_comps(self) -> int:

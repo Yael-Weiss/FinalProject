@@ -1,3 +1,4 @@
+import copy
 from typing import List, Tuple
 from board_values import BoardValues
 from player import Player
@@ -18,7 +19,7 @@ TRIANGLES_CHECK = {Triangles.upper_tri: checking_tri.is_loc_in_upper_tri,
                    Triangles.lower_right_tri: checking_tri.is_loc_in_lower_right_tri,
                    Triangles.lower_left_tri: checking_tri.is_loc_in_lower_left_tri,
                    Triangles.upper_right_tri: checking_tri.is_loc_in_upper_right_tri}
-DIRECTIONS_LIST = [(-2, -2), (-2, 2), (2, -2), (2, 2), (2, 0), (-2, 0)]
+DIRECTIONS_LIST = [(-2, -2), (-2, 2), (2, -2), (2, 2), (2, 0), (-2, 0),(0, 2), (0, -2)]
 
 
 def get_list_of_possible_moves(game_settings: GameSettings, current_loc: Coordinates) -> List[Tuple[int, int]]:
@@ -54,11 +55,13 @@ def get_list_of_possible_moves(game_settings: GameSettings, current_loc: Coordin
     if (1 < col < (len(game_settings.board.the_board[0])-2)):
         if (game_settings.board.the_board[row][col-2] == BoardValues.EMPTY):
             lst.append((row, col-2))
+    if (-1 < col < (len(game_settings.board.the_board[0])-2)):
         if (game_settings.board.the_board[row][col+2] == BoardValues.EMPTY):
             lst.append((row, col+2))
     if (1 < row < (len(game_settings.board.the_board)-2)):
         if (game_settings.board.the_board[row-2][col] == BoardValues.EMPTY):
             lst.append((row-2, col))
+    if (-1 < row < (len(game_settings.board.the_board)-2)):
         if (game_settings.board.the_board[row+2][col] == BoardValues.EMPTY):
             lst.append((row+2, col))
 
@@ -121,9 +124,10 @@ def get_all_possible_moves(game_settings: GameSettings, current_loc: Coordinates
         game_settings, current_loc, set({})))
     possible_moves.extend(list(possible_jumps))
     player = from_current_loc_to_player(game_settings, current_loc)
-    for move in possible_moves:
-        if (is_in_triangle_not_des_not_start(game_settings, player, move)):
-            possible_moves.remove(move)
+    copy_possible_moves = copy.copy(possible_moves)
+    for move_loc in copy_possible_moves:
+        if (is_in_triangle_not_des_not_start(game_settings, player, move_loc)):
+            possible_moves.remove(move_loc)
     return possible_moves
 
 def is_in_triangle_not_des_not_start(game_settings: GameSettings, player: Player, loc: Coordinates) -> bool:

@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Optional, Tuple
 from datetime import datetime
 import re
 from typing import Tuple, Union
@@ -26,23 +26,27 @@ def create_new_game_settings(game_settings: GameSettings) -> Tuple[GameSettings,
     Returns:
         Tuple[GameSettings, bool]: A tuple containing the updated game settings and a boolean value indicating whether it is the first game in the log file.
     """
-    is_new_game = input_provider.make_yes_no_dialog("Welcome to Chinese Checkers Game!",
-                                                    "Do you want to load a game or to start a new one?",
-                                                    "start a new game", "load a game")
-    if is_new_game:
-        file_name = player_pick_valid_file_name(game_settings)
-        game_settings.init_board()
-        another_game = True
-        Logger.create_file(file_name, game_settings.players_list,
-                           game_settings.board.triangle_length)
-    else:
-        file_name = get_existing_file_name(game_settings)
-        game_settings, another_game = read_logger.read_and_load_log_file(
-            file_name)
+    while (True):
+        is_new_game = input_provider.make_yes_no_dialog("Welcome to Chinese Checkers Game!",
+                                                        "Do you want to load a game or to start a new one?",
+                                                        "start a new game", "load a game")
+        if is_new_game:
+            file_name = player_pick_valid_file_name(game_settings)
+            game_settings.init_board()
+            another_game = True
+            Logger.create_file(file_name, game_settings.players_list,
+                               game_settings.board.triangle_length)
+        else:
+            file_name = get_existing_file_name()
+            if (file_name is None):
+                continue
+            game_settings, another_game = read_logger.read_and_load_log_file(
+                file_name)
+        break
     return (game_settings, another_game)
 
 
-def get_existing_file_name(game_settings: GameSettings) -> str:
+def get_existing_file_name() -> Optional[str]:
     """
     Prompts the user to enter the name of an existing game file to load.
 
@@ -56,12 +60,11 @@ def get_existing_file_name(game_settings: GameSettings) -> str:
         file_name = input_provider.get_input_dialog(
             "Enter the name of the game you want to load: ", cancel_text1="Back")
         if (file_name == None):
-            create_new_game_settings(game_settings)
+            return None
         if (file_name[-4:] != ".txt"):
             file_name = file_name+".txt"
         try:
             with open(file_name, 'r') as f:
-                # if(f.name==file_name):
                 break
         except FileNotFoundError:
             input_provider.print_message_dialog(
@@ -85,6 +88,7 @@ def player_pick_valid_file_name(game_settings: GameSettings) -> str:
             "Pick a name to the tournament file: ", cancel_text1="Back")
         if (file_name == None):
             create_new_game_settings(game_settings)
+            return None
         results = re.search("^(?!^ $)[a-zA-Z0-9_ -]+$", file_name)
         if (results == None):
             input_provider.print_message_dialog(
@@ -298,4 +302,5 @@ def play(game_settings: GameSettings) -> None:
                               "\n"+time+" "+game_settings.score_board.get_str_scores())
     input_provider.print_message_dialog(
         game_settings.score_board.get_str_scores()+f"\nGood job everyone, the game ended.", "Game Ended!")
+    game_settings.board.clear_screen()
     game_settings.board.print_board()
