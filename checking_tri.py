@@ -1,6 +1,6 @@
 
 from typing import Tuple
-from board2 import Board
+from board import Board
 
 
 Coordinates = Tuple[int, int]
