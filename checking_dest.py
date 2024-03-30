@@ -3,7 +3,7 @@ from board_values import BoardValues
 from player import Player
 from game_settings import GameSettings
 from triangles import Triangles
-import moveValidation
+import move_validation
 
 Coordinates = Tuple[int, int]
 
@@ -25,7 +25,7 @@ def is_p1_win_in_upper_tri(game_settings: GameSettings, player: Player) -> bool:
             if (game_settings.board.cell_content((i-1, start+2*j)) == BoardValues.EMPTY):
                 return False
             if(game_settings.board.cell_content((i-1, start+2*j)) != player.color
-                    and moveValidation.get_all_possible_moves(game_settings, (i-1, start+2*j)) != []):
+                    and move_validation.get_all_possible_moves(game_settings, (i-1, start+2*j)) != []):
                 return False
         start -= 1
     return True
@@ -50,7 +50,7 @@ def is_p1_win_in_upper_left_tri(game_settings: GameSettings, player: Player) -> 
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
                 return False
             if (game_settings.board.cell_content((start_row, start_col+2*i)) != player.color
-                    and moveValidation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
+                    and move_validation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
                 return False
         start_col += 1
         start_row += 1
@@ -77,7 +77,7 @@ def is_p1_win_in_lower_left_tri(game_settings: GameSettings, player: Player) -> 
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
                 return False
             if (game_settings.board.cell_content((start_row, start_col+2*i)) != player.color
-                    and moveValidation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
+                    and move_validation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
                 return False
         start_col -= 1
         start_row += 1
@@ -104,7 +104,7 @@ def is_p1_win_in_upper_right_tri(game_settings: GameSettings, player: Player) ->
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
                 return False
             if (game_settings.board.cell_content((start_row, start_col+2*i)) != player.color
-                    and moveValidation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
+                    and move_validation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
                 return False
         start_col += 1
         start_row += 1
@@ -131,7 +131,7 @@ def is_p1_win_in_lower_right_tri(game_settings: GameSettings, player: Player) ->
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
                 return False
             if (game_settings.board.cell_content((start_row, start_col+2*i)) != player.color
-                    and moveValidation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
+                    and move_validation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
                 return False
         start_col -= 1
         start_row += 1
@@ -158,7 +158,7 @@ def is_p1_win_in_lower_tri(game_settings: GameSettings, player: Player) -> bool:
             if (game_settings.board.cell_content((start_row, start_col+2*i)) == BoardValues.EMPTY):
                 return False
             if (game_settings.board.cell_content((start_row, start_col+2*i)) != player.color
-                    and moveValidation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
+                    and move_validation.get_all_possible_moves(game_settings, (start_row, start_col+2*i)) != []):
                 return False
         start_col += 1
         start_row += 1

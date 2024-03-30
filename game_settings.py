@@ -23,6 +23,7 @@ COLORS_DICT = {BoardValues.RED.name: BoardValues.RED,
 
 POSSIBLE_NUM_OF_PLAYERS = 6
 
+
 class GameSettings:
     """
     The GameSettings class represents the settings for a Chinese Checkers game.
@@ -143,40 +144,42 @@ class GameSettings:
             (BoardValues.OUT_OF_BOARD, BoardValues.OUT_OF_BOARD.name))
         return COLORS_LIST
 
-    def get_tri_size(self)->int:
+    def get_tri_size(self) -> int:
         """
         Gets the size of the game board from the user.
 
         Returns:
             int: The size of the game board.
         """
-        while(True):
+        while (True):
             tri_size = input_provider.get_input_dialog("""What size you want the board? 
                                             \nIt is recommended to choose a number between 2-10. 
                                             \nYou can choose a bigger one if you have a big screen.""")
             while True:
                 if (tri_size.isdigit()):
-                    if(1 < int(tri_size)<13):
+                    if (1 < int(tri_size) < 13):
                         break
                     else:
                         tri_size = input_provider.get_input_dialog("""Let's be honest, your screen is not so big and your computer is not so strong, please try again. 
                                                             \nWhat size you want the board? 
                                                 \nIt is recommended to choose a number between 2-10. 
-                                                \nYou can choose a bigger one if you have a big screen and strong computer.""")    
-                else:        
+                                                \nYou can choose a bigger one if you have a big screen and strong computer.""")
+                else:
                     tri_size = input_provider.get_input_dialog("""Invalid input, try again. 
                                                             \nWhat size you want the board? 
                                                 \nIt is recommended to choose a number between 2-10. 
                                                 \nYou can choose a bigger one if you have a big screen and strong computer.""")
-            input_provider.print_message_dialog("In the next window you'll see an empty board. \nThe board will be in size "+tri_size+" as you chose.\nPlease ensure that this is the size of the board that you want.","Let's see the board")
+            input_provider.print_message_dialog("In the next window you'll see an empty board. \nThe board will be in size " +
+                                                tri_size+" as you chose.\nPlease ensure that this is the size of the board that you want.", "Let's see")
             temp_board = Board(int(tri_size))
             temp_board.get_empty_board()
             temp_board.clear_screen()
             temp_board.print_board()
             input("Press click enter to continue")
             temp_board.clear_screen()
-            ensuring_message = "You chose the board to be in size "+tri_size+". \nDo you want to continue with this size?"
-            if(input_provider.make_yes_no_dialog("Chinese Checkers Game",ensuring_message , "Yes", "No")):
+            ensuring_message = "You chose the board to be in size " + \
+                tri_size+". \nDo you want to continue with this size?"
+            if (input_provider.make_yes_no_dialog("Chinese Checkers Game", ensuring_message, "Yes", "No")):
                 break
 
         return int(tri_size)
@@ -234,7 +237,7 @@ class GameSettings:
             comp_players.append(player)
         return comp_players
 
-    def get_valid_player_name(self,player_number:int, real_players_lst: List[Player]) -> str:
+    def get_valid_player_name(self, player_number: int, real_players_lst: List[Player]) -> str:
         """
         ask the user for a valid name for a player.
 
@@ -246,8 +249,7 @@ class GameSettings:
             str: The valid name for the player.
         """
         player_name = input_provider.get_input_dialog(
-            f"""What is the name of the player number #{player_number}?: \n
-                    Please don't use "_" in the name. \nThe name has to be one word. \n""")
+            f"""What is the name of the player number #{player_number}?: \nPlease don't use "_" in the name. \nThe name has to be one word. \n""")
         while (True):
             while (True):
                 if (player_name == "" or self.str_is_only_spaces(player_name)):
@@ -286,7 +288,7 @@ class GameSettings:
         real_players_lst = []
         COLORS_LIST = self.get_colors_list()
         for j in range(num_of_real_players):
-            player_name = self.get_valid_player_name(j+1,real_players_lst)
+            player_name = self.get_valid_player_name(j+1, real_players_lst)
             player_color = input_provider.get_input_in_radiolist_dialog(
                 f"Hello {player_name}, What color would you like to be?", COLORS_LIST)
 
@@ -309,4 +311,3 @@ class GameSettings:
         comp_player_list = self.get_comp_players(num_of_comp_players,
                                                  num_of_real_players+num_of_comp_players, real_players_list)
         return real_players_list+comp_player_list
-

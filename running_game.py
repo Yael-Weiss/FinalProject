@@ -5,7 +5,7 @@ from typing import Tuple, Union
 from logger import Logger
 from player import Player
 from game_settings import GameSettings
-import moveValidation
+import move_validation
 import checking_dest
 import player_instruments_pos
 import input_provider
@@ -45,7 +45,6 @@ def create_new_game_settings(game_settings: GameSettings) -> Tuple[GameSettings,
         break
     return (game_settings, another_game)
 
-
 def get_existing_file_name() -> Optional[str]:
     """
     Prompts the user to enter the name of an existing game file to load.
@@ -72,7 +71,6 @@ def get_existing_file_name() -> Optional[str]:
     Logger.name = file_name
     return file_name
 
-
 def player_pick_valid_file_name(game_settings: GameSettings) -> str:
     """
     Prompts the player to enter a valid file name for the tournament file.
@@ -97,7 +95,6 @@ def player_pick_valid_file_name(game_settings: GameSettings) -> str:
             break
     return file_name
 
-
 def is_winner(game_settings: GameSettings, player: Player):
     """
     Check if the player is the winner of the game.
@@ -112,7 +109,6 @@ def is_winner(game_settings: GameSettings, player: Player):
     if (checking_dest.is_p1_win_in_dest(game_settings, player)):
         return True
     return False
-
 
 def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> Coordinates:
     """
@@ -141,12 +137,11 @@ def player_choose_piece_to_move(game_settings: GameSettings, player: Player) -> 
 
         index_in_players_locs = pieces_nums.index(piece)
         current_loc = player_locs_list[index_in_players_locs]
-        if (moveValidation.get_all_possible_moves(game_settings, current_loc) != []):
+        if (move_validation.get_all_possible_moves(game_settings, current_loc) != []):
             break
         print("This piece has no place to move, please choose another one.")
 
     return current_loc
-
 
 def player_choose_destination(game_settings: GameSettings, player: Player, current_loc: Coordinates) -> Coordinates:
     """
@@ -160,7 +155,7 @@ def player_choose_destination(game_settings: GameSettings, player: Player, curre
     Returns:
         Coordinates: The coordinates of the chosen destination.
     """
-    all_possible_moves = moveValidation.get_all_possible_moves(
+    all_possible_moves = move_validation.get_all_possible_moves(
         game_settings, current_loc)
     emoji_possible_moves = game_settings.board.create_emoji_moves(
         len(all_possible_moves))
@@ -179,7 +174,6 @@ def player_choose_destination(game_settings: GameSettings, player: Player, curre
     go_to = all_possible_moves[index_in_possible_moves]
     return go_to
 
-
 def single_comp_turn(game_settings: GameSettings, comp_player: Player) -> Tuple[Coordinates, Coordinates]:
     """
     Executes a single turn for the computer player.
@@ -195,19 +189,18 @@ def single_comp_turn(game_settings: GameSettings, comp_player: Player) -> Tuple[
         current_loc = random.choice(player_instruments_pos.get_all_locs_4player(
             game_settings.board.the_board, comp_player))
 
-        if (moveValidation.is_valid_current_loc(game_settings, comp_player, current_loc)):
+        if (move_validation.is_valid_current_loc(game_settings, comp_player, current_loc)):
             break
 
     while (True):
         go_to = random.choice(
-            moveValidation.get_all_possible_moves(game_settings, current_loc))
+            move_validation.get_all_possible_moves(game_settings, current_loc))
 
-        if (moveValidation.is_valid_move(game_settings, comp_player, current_loc, go_to)):
+        if (move_validation.is_valid_move(game_settings, comp_player, current_loc, go_to)):
             break
 
-    moveValidation.move_player(game_settings, comp_player, current_loc, go_to)
+    move_validation.move_player(game_settings, comp_player, current_loc, go_to)
     return (current_loc, go_to)
-
 
 def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coordinates, Coordinates]:
     """
@@ -224,22 +217,21 @@ def single_player_turn(game_settings: GameSettings, player: Player) -> Tuple[Coo
     game_settings.board.print_board(player)
     while (True):
         current_loc = player_choose_piece_to_move(game_settings, player)
-        if (moveValidation.is_valid_current_loc(game_settings, player, current_loc)):
+        if (move_validation.is_valid_current_loc(game_settings, player, current_loc)):
             break
         print("Invalid input, let's try again.")
     game_settings.board.clear_screen()
     game_settings.board.print_board(None,
-                                    moveValidation.get_all_possible_moves(game_settings, current_loc), current_loc)
+                                    move_validation.get_all_possible_moves(game_settings, current_loc), current_loc)
     while (True):
         go_to = player_choose_destination(game_settings, player, current_loc)
-        if (moveValidation.is_valid_move(game_settings, player, current_loc, go_to)):
+        if (move_validation.is_valid_move(game_settings, player, current_loc, go_to)):
             break
         print("Invalid input, let's try again.")
-    moveValidation.move_player(game_settings, player, current_loc, go_to)
+    move_validation.move_player(game_settings, player, current_loc, go_to)
     game_settings.board.clear_screen()
     game_settings.board.print_board()
     return (current_loc, go_to)
-
 
 def single_round(game_settings: GameSettings) -> Union[Player, None]:
     """
@@ -260,7 +252,6 @@ def single_round(game_settings: GameSettings) -> Union[Player, None]:
         if is_winner(game_settings, player):
             return player
     return None
-
 
 def play(game_settings: GameSettings) -> None:
     """

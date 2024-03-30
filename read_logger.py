@@ -3,7 +3,7 @@ from board_values import BoardValues
 from player import Player
 from game_settings import GameSettings
 from triangles import Triangles
-import moveValidation
+import move_validation
 
 COLORS = {
     "BoardValues.RED": BoardValues.RED,
@@ -148,7 +148,7 @@ def set_moves_and_move_from_log(moves_lines: List[str], game_settings: GameSetti
                 player_to_move = players_list[i]
         current_loc = from_str_to_coordinates(splited_line[2])
         go_to = from_str_to_coordinates(splited_line[3])
-        moveValidation.move_player(
+        move_validation.move_player(
             game_settings, player_to_move, current_loc, go_to)
 
 def set_scores_board_from_log(scores_lines: List[str], game_settings: GameSettings) -> None:
